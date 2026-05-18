@@ -1,25 +1,18 @@
 import socket
+server_socket=socket.socket()
 
-HOST = "127.0.0.1"
-PORT = 5000
+print("Server socket created...")
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind(('localhost',9999))
 
-server.bind((HOST, PORT))
+server_socket.listen(5)
+print("waiting for connection...")
 
-server.listen()
+while True:
+    client_socket,client_add=server_socket.accept() #it returns tuple
+    name=client_socket.recv(1024).decode()
+    print(f'Server connected with client-{client_add},{name}')
 
-print(f"Server running on {HOST}:{PORT}")
+    client_socket.send(bytes("Hello from server!",'utf-8'))
+    client_socket.close()
 
-client_socket, client_address = server.accept()
-
-print(f"Connected to {client_address}")
-
-message = client_socket.recv(1024).decode()
-
-print(f"Client says: {message}")
-
-client_socket.send("Message received by server".encode())
-
-client_socket.close()
-server.close()

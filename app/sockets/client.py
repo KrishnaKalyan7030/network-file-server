@@ -1,17 +1,8 @@
 import socket
+client_socket=socket.socket()
+client_socket.connect(('localhost',9999))
 
-HOST = "127.0.0.1"
-PORT = 5000
-# AF_INET -> IPV4 communication
-# SOCK_STREAM-> TCP Protocol
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+name=input("Enter name: ")
+client_socket.send(bytes(name,'utf-8'))
 
-client.connect((HOST, PORT))
-
-client.send("Hello from client".encode())
-
-response = client.recv(1024).decode()
-
-print(f"Server response: {response}")
-
-client.close()
+print(client_socket.recv(1024).decode())
