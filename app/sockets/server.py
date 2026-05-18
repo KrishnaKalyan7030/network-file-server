@@ -10,9 +10,17 @@ print("waiting for connection...")
 
 while True:
     client_socket,client_add=server_socket.accept() #it returns tuple
-    name=client_socket.recv(1024).decode()
-    print(f'Server connected with client-{client_add},{name}')
+    print("Connection created!")
 
-    client_socket.send(bytes("Hello from server!",'utf-8'))
-    client_socket.close()
+    while True:
+        msg=client_socket.recv(1024).decode()
+
+        if msg.lower()=='exit':
+            print(f'client {client_add} disconnected')
+            client_socket.close()
+            break
+        
+        print(f'Message from {client_add}:{msg}')
+
+        client_socket.send(f'Server Received:{msg}'.encode())
 

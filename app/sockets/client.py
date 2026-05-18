@@ -1,8 +1,17 @@
 import socket
 client_socket=socket.socket()
 client_socket.connect(('localhost',9999))
+print("connected to server")
 
-name=input("Enter name: ")
-client_socket.send(bytes(name,'utf-8'))
+while True:
+    
+    msg=input("Enter message: ")
+    client_socket.send(msg.encode())
 
-print(client_socket.recv(1024).decode())
+
+    if msg.lower()=='exit':
+        client_socket.close()
+        break
+    
+    response=client_socket.recv(1024).decode()
+    print(response)

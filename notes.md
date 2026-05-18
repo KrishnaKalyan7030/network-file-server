@@ -23,3 +23,24 @@ Range of port no lies between 0 to 65535
 
 
 
+================== Persistent Communication =====================
+Client and Server continuous connection until exit occurs.
+Server should run continuously to serve clients.So we use While True i.e loop concept.
+
+Client connects
+↓
+Client sends message
+↓
+Server replies
+↓
+Client sends another message
+↓
+Server replies
+↓
+repeat...
+↓
+exit
+↓
+connection closes
+
+Flowchart of Persistent Communication.
