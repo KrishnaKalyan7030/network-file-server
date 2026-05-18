@@ -8,7 +8,6 @@ while True:
     msg=input("Enter message: ")
     client_socket.send(msg.encode())
 
-
     if msg.lower()=='exit':
         client_socket.close()
         break

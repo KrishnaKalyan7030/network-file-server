@@ -44,3 +44,53 @@ exit
 connection closes
 
 Flowchart of Persistent Communication.
+
+
+
+============ Single threading ============= 
+#server.py
+import socket
+client_socket=socket.socket()
+client_socket.connect(('localhost',9999))
+print("connected to server")
+
+while True:
+    
+    msg=input("Enter message: ")
+    client_socket.send(msg.encode())
+
+    if msg.lower()=='exit':
+        client_socket.close()
+        break
+    
+    response=client_socket.recv(1024).decode()
+    print(response)
+
+#client.py
+import socket
+server_socket=socket.socket()
+
+print("Server socket created...")
+
+server_socket.bind(('localhost',9999))
+
+server_socket.listen(5)
+print("waiting for connection...")
+
+while True:
+    client_socket,client_add=server_socket.accept() #it returns tuple
+    print("Connection created!")
+
+    while True:
+        msg=client_socket.recv(1024).decode()
+
+        if msg.lower()=='exit':
+            print(f'client {client_add} disconnected')
+            client_socket.close()
+            break
+        
+        print(f'Message from {client_add}:{msg}')
+
+        client_socket.send(f'Server Received:{msg}'.encode())
+
+Here Client 1 recv() waiting forever until client1 is disconnected.
