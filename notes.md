@@ -94,3 +94,8 @@ while True:
         client_socket.send(f'Server Received:{msg}'.encode())
 
 Here Client 1 recv() waiting forever until client1 is disconnected.
+
+
+<!-- ============ Threading ====================== -->
+If main server closes,
+all worker threads terminate automatically.daemon=True
