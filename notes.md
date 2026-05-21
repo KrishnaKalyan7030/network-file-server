@@ -99,3 +99,43 @@ Here Client 1 recv() waiting forever until client1 is disconnected.
 <!-- ============ Threading ====================== -->
 If main server closes,
 all worker threads terminate automatically.daemon=True
+
+
+If main server closes,all worker threads terminate automatically by using deamon=True.
+
+Sockets are designed such that:
+bytes received → actual data
+empty bytes → connection closed
+This is standard TCP socket behavior.
+
+when client sends data , server receives b'data' which is decoded to receive actual data.If clent didnt send any such data through send() then server receives b'' i.e. empty message it means client disconnected.
+
+Bacially two types of disconnect. 
+1. abrupt -> client crashes/closes suddenly
+
+client force closes terminal
+↓
+OS kills socket immediately
+↓
+server recv() interrupted
+↓
+exception raised
+
+2. graceful -> when user enters exit
+
+
+
+
+
+================== Architecture of project ======================
+Client
+   ↓
+FastAPI Backend
+   ↓
+Authentication Layer
+   ↓
+File Service
+   ↓
+PostgreSQL Database
+   ↓
+Local File Storage
