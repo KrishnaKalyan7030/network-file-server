@@ -8,8 +8,14 @@ try:
 
     print("Connected to server")
     file=open('../files/sample.txt','rb')  #rb=> raw bytes
-    chunk=file.read(1024)
-    print(chunk)
+    while True:
+        chunk=file.read(1024)
+        
+        if not chunk:
+            break
+
+        client_socket.send(chunk)
+    print('File Uploaded Successfully.')
     # while True:
 
     #     msg = input("Enter message: ")

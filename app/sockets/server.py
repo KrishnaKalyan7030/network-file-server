@@ -6,25 +6,39 @@ def handle_client(client_socket, client_add):
 
     try:
 
+        file = open('../uploads/received_sample.txt', 'wb')
+
         while True:
 
-            msg = client_socket.recv(1024).decode()
+            # msg = client_socket.recv(1024).decode()
             
 
-            # Empty recv means disconnected
+            # # Empty recv means disconnected
+            # if not msg:
+            #     print(f"{client_add} disconnected unexpectedly")
+            #     break
+
+            # if msg.lower() == 'exit':
+            #     print(f"{client_add} disconnected gracefully")
+            #     break
+
+            # print(f"Message from {client_add}: {msg}")
+
+            # client_socket.send(
+            #     f"Server Received: {msg}".encode()
+            # )
+
+            msg = client_socket.recv(1024)
+
             if not msg:
-                print(f"{client_add} disconnected unexpectedly")
+                print("File transfer completed")
                 break
 
-            if msg.lower() == 'exit':
-                print(f"{client_add} disconnected gracefully")
-                break
+            file.write(msg)
 
-            print(f"Message from {client_add}: {msg}")
+        file.close()
 
-            client_socket.send(
-                f"Server Received: {msg}".encode()
-            )
+        print("File received successfully")
 
     except Exception as e:
 
@@ -45,7 +59,7 @@ server_socket.bind(('localhost', 9999))
 
 server_socket.listen(5)
 
-print("Waiting for connection...")   
+print("Waiting for connection...")
 
 
 while True:
