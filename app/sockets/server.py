@@ -7,7 +7,9 @@ def handle_client(client_socket, client_add):
     try:
         
         #receive filaname first
-        filename=client_socket.recv(1024).decode()
+        metadata=client_socket.recv(1024).decode()
+        filename = metadata.split('<SEPARATOR>')[0]
+
         print(f"Receiving file:{filename}")
 
         file = open(f'../uploads/{filename}', 'wb')
@@ -64,6 +66,7 @@ server_socket.bind(('localhost', 9999))
 server_socket.listen(5)
 
 print("Waiting for connection...")
+print("you knocked it.")
 
 
 while True:

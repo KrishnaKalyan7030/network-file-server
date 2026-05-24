@@ -1,4 +1,5 @@
 import socket
+import time
 
 client_socket = socket.socket()
 
@@ -10,11 +11,14 @@ try:
 
     #send file name
     filename='sample.txt'
-    client_socket.send(filename.encode())
+    client_socket.send(f'{filename}<SEPARATOR>'.encode())
+
+    time.sleep(1)
 
 
     #open file in binary read mode
-    file=open('../files/sample.txt','rb')  #rb=> raw bytes
+    file=open(f'../files/{filename}','rb')  #rb=> raw bytes
+   
     while True:
         chunk=file.read(1024)
         
@@ -22,9 +26,10 @@ try:
             break
 
         client_socket.send(chunk)
+    file.close()
 
     print('File Uploaded Successfully.')
-    
+
     # while True:
 
     #     msg = input("Enter message: ")
