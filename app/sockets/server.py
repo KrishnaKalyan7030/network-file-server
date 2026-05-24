@@ -5,8 +5,12 @@ import threading
 def handle_client(client_socket, client_add):
 
     try:
+        
+        #receive filaname first
+        filename=client_socket.recv(1024).decode()
+        print(f"Receiving file:{filename}")
 
-        file = open('../uploads/received_sample.txt', 'wb')
+        file = open(f'../uploads/{filename}', 'wb')
 
         while True:
 
