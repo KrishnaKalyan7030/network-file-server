@@ -14,7 +14,7 @@ def handle_client(client_socket, client_add):
     try:
 
         # AUTHENTICATION PHASE
-        
+
         login_data = client_socket.recv(1024).decode()
 
         login_parts = login_data.split()
@@ -46,7 +46,8 @@ def handle_client(client_socket, client_add):
             else:
 
                 print(f"Authentication failed for {username}")
-                client_socket.send ("AUTH_FAILED".encode())
+
+                client_socket.send("AUTH_FAILED".encode())
 
                 client_socket.close()
 
@@ -60,135 +61,177 @@ def handle_client(client_socket, client_add):
 
             return
 
-       
         # OPERATION PHASE
-       
 
-        command = client_socket.recv(1024).decode()
+        while True:
 
-        parts = command.split()
+            command = client_socket.recv(1024).decode()
 
-        # Empty command validation
-        if len(parts) < 1:
+            # client disconnected
+            if not command:
 
-            print("Invalid Command")
+                print(f"{client_add} disconnected")
 
-            client_socket.close()
+                break
 
-            return
+            # logout operation
+            if command.upper() == 'LOGOUT':
 
-        operation = parts[0].upper()
+                print(f"{username} logged out")
 
-        print(f"Operation requested: {operation}")
+                break
 
-        
-        # UPLOAD OPERATION
+            parts = command.split()
 
-        if operation == 'UPLOAD':
+            # Empty command validation
+            if len(parts) < 1:
 
-            if len(parts) < 2:
+                print("Invalid Command")
 
-                print("Filename missing")
+                continue
 
-                return
+            operation = parts[0].upper()
 
-            filename = parts[1]
+            print(f"Operation requested: {operation}")
 
-            print(f"UPLOAD request for {filename}")
+            # UPLOAD OPERATION
 
-            file = open(f'../uploads/{filename}', 'wb')
+            if operation == 'UPLOAD':
 
-            while True:
+                if len(parts) < 3:
 
-                data = client_socket.recv(1024)
+                    print("Filename or filesize missing")
 
-                if not data:
-                    break
+                    continue
 
-                file.write(data)
+                filename = parts[1]
 
-            file.close()
+                filesize = int(parts[2])
 
-            print('Upload Complete')
+                print(f"UPLOAD request for {filename}")
 
-     
-        # DOWNLOAD OPERATION
-        elif operation == 'DOWNLOAD':
+                file = open(f'../uploads/{filename}', 'wb')
 
-            if len(parts) < 2:
+                received_size = 0
 
-                print("Filename missing")
+                while received_size < filesize:
 
-                return
+                    data = client_socket.recv(1024)
 
-            filename = parts[1]
+                    if not data:
+                        break
 
-            print(f"DOWNLOAD request for {filename}")
+                    file.write(data)
 
-            file = open(f'../uploads/{filename}', 'rb')
+                    received_size += len(data)
 
-            while True:
+                file.close()
 
-                chunk = file.read(1024)
+                print('Upload Complete')
 
-                if not chunk:
-                    break
+                client_socket.send(
+                    "UPLOAD_SUCCESS".encode()
+                )
 
-                client_socket.send(chunk)
+            # DOWNLOAD OPERATION
+            elif operation == 'DOWNLOAD':
 
-            file.close()
+                if len(parts) < 2:
 
-            print("Download Complete")
+                    print("Filename missing")
 
-        # LIST OPERATION
-        elif operation == 'LIST':
+                    continue
 
-            files = os.listdir('../uploads')
+                filename = parts[1]
 
-            if not files:
+                print(f"DOWNLOAD request for {filename}")
 
-                response = "No files available"
+                filepath = f'../uploads/{filename}'
+
+                if not os.path.exists(filepath):
+
+                    client_socket.send(
+                        "FILE_NOT_FOUND".encode()
+                    )
+
+                    continue
+
+                filesize = os.path.getsize(filepath)
+
+                client_socket.send(
+                    str(filesize).encode()
+                )
+
+                acknowledgement = client_socket.recv(1024).decode()
+
+                if acknowledgement != 'READY':
+
+                    continue
+
+                file = open(filepath, 'rb')
+
+                while True:
+
+                    chunk = file.read(1024)
+
+                    if not chunk:
+                        break
+
+                    client_socket.send(chunk)
+
+                file.close()
+
+                print("Download Complete")
+
+            # LIST OPERATION
+            elif operation == 'LIST':
+
+                files = os.listdir('../uploads')
+
+                if not files:
+
+                    response = "No files available"
+
+                else:
+
+                    response = '\n'.join(files)
+
+                client_socket.send(response.encode())
+
+                print("File list sent")
+
+            # DELETE OPERATION
+            elif operation == 'DELETE':
+
+                if len(parts) < 2:
+
+                    print("Filename missing")
+
+                    continue
+
+                filename = parts[1]
+
+                filepath = f'../uploads/{filename}'
+
+                if os.path.exists(filepath):
+
+                    os.remove(filepath)
+
+                    client_socket.send(
+                        "File deleted successfully".encode()
+                    )
+
+                else:
+
+                    client_socket.send(
+                        "File not found".encode()
+                    )
+
+            # INVALID OPERATION
 
             else:
 
-                response = '\n'.join(files)
-
-            client_socket.send(response.encode())
-
-            print("File list sent")
-
-        # DELETE OPERATION
-        elif operation == 'DELETE':
-
-            if len(parts) < 2:
-
-                print("Filename missing")
-
-                return
-
-            filename = parts[1]
-
-            filepath = f'../uploads/{filename}'
-
-            if os.path.exists(filepath):
-
-                os.remove(filepath)
-
-                client_socket.send(
-                    "File deleted successfully".encode()
-                )
-
-            else:
-
-                client_socket.send(
-                    "File not found".encode()
-                )
-
-       
-        # INVALID OPERATION
-        else:
-
-            print("Invalid operation")
+                print("Invalid operation")
 
     except Exception as e:
 
@@ -201,11 +244,10 @@ def handle_client(client_socket, client_add):
         print(f"Connection closed for {client_add}")
 
 
-
 # SERVER SETUP
 server_socket = socket.socket()
 
-server_socket.bind(('localhost', 9999))
+server_socket.bind(('0.0.0.0', 9999))
 
 server_socket.listen(5)
 
