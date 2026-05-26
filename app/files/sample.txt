@@ -1,37 +1,3 @@
-Hello Network File Server
-This is first upload test.
+Hare Krishna Hare Krishna Krishna Krishna Hare Hare 
+Hare Ram Hare Ram Hare Ram Ram Ram Hare Hare
 
-s that expand a network's bandwidth, allowing devices to connect without cables.
-Network Interface Cards (NICs): The internal circuit boards in devices that monitor and manage communication with the network. 
-
-Cisco
- +6
-Types of Networks
-Networks are broadly categorized based on their geographical size and accessibility: 
-
-GeeksforGeeks
- +4
-LAN (Local Area Network): Connects devices in a limited area like a home, office, or school building.
-WLAN (Wireless Local Area Network): A LAN that relies entirely on wireless technologies like Wi-Fi.
-WAN (Wide Area Network): Spans a large geographical distance, connecting multiple LANs across cities or countries (the Internet is the largest WAN).
-VPN (Virtual Private Network): Extends a private network across a public network, encrypting the connection for secure data transfer. 
-
-Cisco
- +6
-How Data Moves: The OSI Model Layers 
-The OSI Model defines seven distinct functional layers to standardise how data transmits over a network. The four core layers managing data traffic are: 
-
-Zero To Mastery
- +1
-Layer 1 (Physical): Governs the raw bitstream transmission over physical media like optical fibers, ethernet cables, or Wi-Fi radio frequencies.
-Layer 2 (Data Link): Packages raw bits into data frames and ensures accurate delivery using physical MAC addresses embedded in hardware.
-Layer 3 (Network): Assigns logical IP addresses and determines the most efficient routing paths to send data packets between separate networks.
-Layer 4 (Transport): Uses protocols like TCP to manage connection reliability, error checking, flow control, and proper data packet reassembly. 
-
-GeeksforGeeks
- +4
-If you are looking to narrow this down, please let me know:
-Are you studying for a specific exam/certification (like Cisco CCNA)?
-Do you want to fix a home network issue?
-Are you interested in professional/social networking instead of computer networks?
-I can provide tailored guides or troubleshooting steps depending on what you need.

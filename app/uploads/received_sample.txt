@@ -1,4 +1,4 @@
-Hello Network File Server
+sample.txtHello Network File Server
 This is first upload test.
 
 s that expand a network's bandwidth, allowing devices to connect without cables.
