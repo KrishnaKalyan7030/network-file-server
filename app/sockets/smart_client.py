@@ -8,6 +8,25 @@ try:
 
     print('Connected to server')
 
+
+    username=input("Enter username: ")
+    password=input('Enter password: ')
+    login_command=f'LOGIN {username} {password}'
+    client_socket.send(login_command.encode())
+    auth_response=client_socket.recv(1024).decode()
+    
+    if auth_response != 'AUTH_SUCCESS':
+
+        print("Authentication Failed")
+    
+        client_socket.close()
+    
+        exit()
+    else:
+        print("Authentication Successful")
+
+
+
     operation = input("Enter operation: ").upper()
 
    

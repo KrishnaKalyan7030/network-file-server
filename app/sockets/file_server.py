@@ -1,10 +1,68 @@
 import socket
 import threading
 import os
+import json
+
+
+# Load users from JSON file
+with open('../../users.json', 'r') as file:
+    users = json.load(file)
+
 
 def handle_client(client_socket, client_add):
 
     try:
+
+        # AUTHENTICATION PHASE
+        
+        login_data = client_socket.recv(1024).decode()
+
+        login_parts = login_data.split()
+
+        # Validate login format
+        if len(login_parts) != 3:
+
+            client_socket.send("AUTH_FAILED".encode())
+
+            client_socket.close()
+
+            return
+
+        command = login_parts[0]
+
+        username = login_parts[1]
+
+        password = login_parts[2]
+
+        # Verify credentials
+        if command == 'LOGIN':
+
+            if username in users and users[username] == password:
+
+                print(f"{username} authenticated successfully")
+
+                client_socket.send("AUTH_SUCCESS".encode())
+
+            else:
+
+                print(f"Authentication failed for {username}")
+                client_socket.send ("AUTH_FAILED".encode())
+
+                client_socket.close()
+
+                return
+
+        else:
+
+            client_socket.send("AUTH_FAILED".encode())
+
+            client_socket.close()
+
+            return
+
+       
+        # OPERATION PHASE
+       
 
         command = client_socket.recv(1024).decode()
 
@@ -25,7 +83,7 @@ def handle_client(client_socket, client_add):
 
         
         # UPLOAD OPERATION
-       
+
         if operation == 'UPLOAD':
 
             if len(parts) < 2:
@@ -53,9 +111,8 @@ def handle_client(client_socket, client_add):
 
             print('Upload Complete')
 
-       
+     
         # DOWNLOAD OPERATION
-       
         elif operation == 'DOWNLOAD':
 
             if len(parts) < 2:
@@ -83,9 +140,7 @@ def handle_client(client_socket, client_add):
 
             print("Download Complete")
 
-       
         # LIST OPERATION
-      
         elif operation == 'LIST':
 
             files = os.listdir('../uploads')
@@ -101,25 +156,36 @@ def handle_client(client_socket, client_add):
             client_socket.send(response.encode())
 
             print("File list sent")
-        
+
         # DELETE OPERATION
-    
         elif operation == 'DELETE':
+
             if len(parts) < 2:
-                print("Filename missing")            
+
+                print("Filename missing")
+
                 return
+
             filename = parts[1]
+
             filepath = f'../uploads/{filename}'
 
             if os.path.exists(filepath):
+
                 os.remove(filepath)
-                client_socket.send( "File deleted successfully".encode() )
+
+                client_socket.send(
+                    "File deleted successfully".encode()
+                )
+
             else:
-                client_socket.send("File not found".encode() )
+
+                client_socket.send(
+                    "File not found".encode()
+                )
 
        
         # INVALID OPERATION
-     
         else:
 
             print("Invalid operation")
@@ -135,6 +201,8 @@ def handle_client(client_socket, client_add):
         print(f"Connection closed for {client_add}")
 
 
+
+# SERVER SETUP
 server_socket = socket.socket()
 
 server_socket.bind(('localhost', 9999))
