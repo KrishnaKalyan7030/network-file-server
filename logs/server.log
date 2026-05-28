@@ -1,0 +1,34 @@
+[2026-05-28 20:16:58] New connection from ('192.168.0.175', 64681)
+[2026-05-28 20:17:05] krishna logged in successfully
+[2026-05-28 20:17:09] krishna viewed file list
+[2026-05-28 20:17:24] krishna disconnected
+[2026-05-28 20:17:28] New connection from ('192.168.0.175', 50869)
+[2026-05-28 20:17:39] Failed login attempt for sachin
+[2026-05-28 20:51:04] New connection from ('192.168.0.175', 51701)
+[2026-05-28 20:51:12] Invalid login format from ('192.168.0.175', 51701)
+[2026-05-28 20:51:14] New connection from ('192.168.0.175', 51704)
+[2026-05-28 20:51:18] krishna logged in successfully
+[2026-05-28 20:51:34] krishna viewed file list
+[2026-05-28 20:54:46] New connection from ('192.168.0.175', 54534)
+[2026-05-28 20:54:52] krishna logged in successfully
+[2026-05-28 20:56:56] krishna viewed file list
+[2026-05-28 20:57:03] krishna logged out
+[2026-05-28 20:57:07] New connection from ('192.168.0.175', 56029)
+[2026-05-28 20:57:11] arjun logged in successfully
+[2026-05-28 21:14:45] Server error with ('192.168.0.175', 56029): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:15:34] New connection from ('192.168.0.175', 53560)
+[2026-05-28 21:15:38] krishna logged in successfully
+[2026-05-28 21:15:42] krishna sent invalid operation HISTORY
+[2026-05-28 21:20:07] Server error with ('192.168.0.175', 53560): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:20:20] New connection from ('192.168.0.175', 57828)
+[2026-05-28 21:20:24] krishna logged in successfully
+[2026-05-28 21:20:27] krishna sent invalid operation HISTORY
+[2026-05-28 21:26:06] Server error with ('192.168.0.175', 57828): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:26:23] New connection from ('192.168.0.175', 55115)
+[2026-05-28 21:26:30] Invalid login format from ('192.168.0.175', 55115)
+[2026-05-28 21:26:32] New connection from ('192.168.0.175', 55127)
+[2026-05-28 21:26:37] krishna logged in successfully
+[2026-05-28 21:26:40] krishna sent invalid operation HISTORY
+[2026-05-28 21:27:12] New connection from ('192.168.0.175', 55157)
+[2026-05-28 21:27:17] arjun logged in successfully
+[2026-05-28 21:27:20] arjun viewed server history

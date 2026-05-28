@@ -567,3 +567,12 @@ This step teaches:
 
 
 Modularity means breaking large systems into resuable independent units.
+
+
+========== audit trail access ======
+authorised client can access history of logs stored in serevr.
+System Observability->
+
+Centralized audit logging
+
+persistent storage concep-> even if server restart logs store permanently as it si stored in file

@@ -347,10 +347,22 @@ def handle_client(client_socket, client_add):
                         f"{username} tried deleting missing file {filename}"
                     )
 
+            elif operation == 'HISTORY':
+                with open('../../logs/server.log', 'r') as file:
+                    history = file.read()
+
+                if not history:
+                    history = 'No Logs Available'
+
+                client_socket.send( history.encode() )
+
+                print('History sent')
+
+                log_activity( f"{username} viewed server history")
+
+
             # INVALID OPERATION
-
             else:
-
                 print("Invalid operation")
 
                 log_activity(

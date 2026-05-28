@@ -10,6 +10,7 @@ try:
     print('Connected to server')
 
     username = input("Enter username: ")
+
     password = input('Enter password: ')
 
     login_command = f'LOGIN {username} {password}'
@@ -31,12 +32,17 @@ try:
         print("Authentication Successful")
 
     while True:
+
         print("""
-                1. UPLOAD
-                2. DOWNLOAD
-                3. LIST
-                4. DELETE
-                5. LOGOUT
+                 ==  NETWORK FILE SERVER ==
+
+                UPLOAD
+                DOWNLOAD
+                LIST
+                DELETE
+                HISTORY
+                LOGOUT
+
               """)
 
         operation = input("Enter operation: ").upper()
@@ -57,117 +63,144 @@ try:
 
             client_socket.send(operation.encode())
 
-            response = client_socket.recv(1024).decode()
+            response = client_socket.recv(4096).decode()
 
             print("\nFiles available on server:\n")
 
             print(response)
 
-        # UPLOAD / DOWNLOAD / DELETE
+        # HISTORY OPERATION
 
-        elif operation in ['UPLOAD', 'DOWNLOAD', 'DELETE']:
+        elif operation == 'HISTORY':
+
+            client_socket.send(operation.encode())
+
+            history = client_socket.recv(4096).decode()
+
+            print("\nSERVER HISTORY:\n")
+
+            print(history)
+
+        # UPLOAD OPERATION
+
+        elif operation == 'UPLOAD':
 
             filename = input('Enter Filename: ')
 
-            # UPLOAD
-            if operation == 'UPLOAD':
+            filepath = f'../files/{filename}'
 
-                filepath = f'../files/{filename}'
+            if not os.path.exists(filepath):
 
-                if not os.path.exists(filepath):
+                print("File does not exist")
 
-                    print("File does not exist")
+                continue
 
-                    continue
+            filesize = os.path.getsize(filepath)
 
-                filesize = os.path.getsize(filepath)
+            command = f'{operation} {filename} {filesize}'
 
-                command = f'{operation} {filename} {filesize}'
+            client_socket.send(command.encode())
 
-                client_socket.send(command.encode())
+            file = open(filepath, 'rb')
 
-                file = open(filepath, 'rb')
+            sent_size = 0
 
-                sent_size = 0
+            while sent_size < filesize:
 
-                while sent_size < filesize:
+                data = file.read(1024)
 
-                    data = file.read(1024)
+                if not data:
+                    break
 
-                    if not data:
-                        break
+                client_socket.send(data)
 
-                    client_socket.send(data)
+                sent_size += len(data)
 
-                    sent_size += len(data)
+                progress = (sent_size / filesize) * 100
 
-                    progress = (sent_size / filesize) * 100
+                print(
+                    f"Uploading: {progress:.2f}%",
+                    end='\r'
+                )
 
-                    print(f"Uploading: {progress:.2f}%", end='\r')
+            file.close()
 
-                file.close()
+            print("\nFile uploaded successfully")
 
-                print("\nFile uploaded successfully")
+            response = client_socket.recv(1024).decode()
 
-                response = client_socket.recv(1024).decode()
+            print(response)
 
-                print(response)
+        # DOWNLOAD OPERATION
 
-            # DOWNLOAD
+        elif operation == 'DOWNLOAD':
 
-            elif operation == 'DOWNLOAD':
+            filename = input('Enter Filename: ')
 
-                command = f'{operation} {filename}'
+            command = f'{operation} {filename}'
 
-                client_socket.send(command.encode())
+            client_socket.send(command.encode())
 
-                response = client_socket.recv(1024).decode()
+            response = client_socket.recv(1024).decode()
 
-                # file not found
-                if response == 'FILE_NOT_FOUND':
+            # file not found
+            if response == 'FILE_NOT_FOUND':
 
-                    print("File not found on server")
+                print("File not found on server")
 
-                    continue
+                continue
 
-                filesize = int(response)
+            filesize = int(response)
 
-                client_socket.send("READY".encode())
+            client_socket.send("READY".encode())
 
-                file = open(f'../downloads/{filename}', 'wb')
+            download_path = f'../downloads/{filename}'
 
-                received_size = 0
+            file = open(download_path, 'wb')
 
-                while received_size < filesize:
+            received_size = 0
 
-                    data = client_socket.recv(1024)
+            while received_size < filesize:
 
-                    if not data:
-                        break
+                data = client_socket.recv(1024)
 
-                    file.write(data)
+                if not data:
+                    break
 
-                    received_size += len(data)
+                file.write(data)
 
-                    progress = (received_size / filesize) * 100
+                received_size += len(data)
 
-                    print(f"Downloading: {progress:.2f}%", end='\r')
+                progress = (
+                    received_size / filesize
+                ) * 100
 
-                file.close()
+                print(
+                    f"Downloading: {progress:.2f}%",
+                    end='\r'
+                )
 
-                print("\nDownload completed")
+            file.close()
 
-            # DELETE
+            print("\nDownload completed")
 
-            elif operation == 'DELETE':
+            print(
+                f"File saved to {download_path}"
+            )
 
-                command = f'{operation} {filename}'
+        # DELETE OPERATION
 
-                client_socket.send(command.encode())
+        elif operation == 'DELETE':
 
-                response = client_socket.recv(1024).decode()
+            filename = input('Enter Filename: ')
 
-                print(response)
+            command = f'{operation} {filename}'
+
+            client_socket.send(command.encode())
+
+            response = client_socket.recv(1024).decode()
+
+            print(response)
 
         # INVALID OPERATION
 
