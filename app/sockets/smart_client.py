@@ -34,24 +34,29 @@ try:
     while True:
 
         print("""
-                 ==  NETWORK FILE SERVER ==
+                 == NETWORK FILE SERVER ==
 
                 UPLOAD
                 DOWNLOAD
                 LIST
                 DELETE
                 HISTORY
+                SHARE
                 LOGOUT
 
               """)
 
-        operation = input("Enter operation: ").upper()
+        operation = input(
+            "Enter operation: "
+        ).upper()
 
         # LOGOUT OPERATION
 
         if operation == 'LOGOUT':
 
-            client_socket.send(operation.encode())
+            client_socket.send(
+                operation.encode()
+            )
 
             print("Logged out successfully")
 
@@ -61,11 +66,17 @@ try:
 
         elif operation == 'LIST':
 
-            client_socket.send(operation.encode())
+            client_socket.send(
+                operation.encode()
+            )
 
-            response = client_socket.recv(4096).decode()
+            response = client_socket.recv(
+                4096
+            ).decode()
 
-            print("\nFiles available on server:\n")
+            print(
+                "\nFiles available on server:\n"
+            )
 
             print(response)
 
@@ -74,18 +85,28 @@ try:
         elif operation == 'HISTORY':
 
             client_socket.send(operation.encode())
-
+        
             history = client_socket.recv(4096).decode()
-
-            print("\nSERVER HISTORY:\n")
-
-            print(history)
+        
+            if history == 'ACCESS_DENIED':
+        
+                print(
+                    "Only admin can view server history"
+                )
+        
+            else:
+        
+                print("\nSERVER HISTORY:\n")
+        
+                print(history)
 
         # UPLOAD OPERATION
 
         elif operation == 'UPLOAD':
 
-            filename = input('Enter Filename: ')
+            filename = input(
+                'Enter Filename: '
+            )
 
             filepath = f'../files/{filename}'
 
@@ -95,11 +116,17 @@ try:
 
                 continue
 
-            filesize = os.path.getsize(filepath)
+            filesize = os.path.getsize(
+                filepath
+            )
 
-            command = f'{operation} {filename} {filesize}'
+            command = (
+                f'{operation} {filename} {filesize}'
+            )
 
-            client_socket.send(command.encode())
+            client_socket.send(
+                command.encode()
+            )
 
             file = open(filepath, 'rb')
 
@@ -116,7 +143,9 @@ try:
 
                 sent_size += len(data)
 
-                progress = (sent_size / filesize) * 100
+                progress = (
+                    sent_size / filesize
+                ) * 100
 
                 print(
                     f"Uploading: {progress:.2f}%",
@@ -125,9 +154,13 @@ try:
 
             file.close()
 
-            print("\nFile uploaded successfully")
+            print(
+                "\nFile uploaded successfully"
+            )
 
-            response = client_socket.recv(1024).decode()
+            response = client_socket.recv(
+                1024
+            ).decode()
 
             print(response)
 
@@ -135,26 +168,50 @@ try:
 
         elif operation == 'DOWNLOAD':
 
-            filename = input('Enter Filename: ')
+            filename = input(
+                'Enter Filename: '
+            )
 
-            command = f'{operation} {filename}'
+            command = (
+                f'{operation} {filename}'
+            )
 
-            client_socket.send(command.encode())
+            client_socket.send(
+                command.encode()
+            )
 
-            response = client_socket.recv(1024).decode()
+            response = client_socket.recv(
+                1024
+            ).decode()
 
-            # file not found
-            if response == 'FILE_NOT_FOUND':
+            # access denied
+            if response == 'ACCESS_DENIED':
 
-                print("File not found on server")
+                print(
+                    "You don't have permission to download this file"
+                )
 
                 continue
 
+            # file not found
+            elif response == 'FILE_NOT_FOUND':
+
+                print(
+                    "File not found on server"
+                )
+
+                continue
+
+            # filesize received
             filesize = int(response)
 
-            client_socket.send("READY".encode())
+            client_socket.send(
+                "READY".encode()
+            )
 
-            download_path = f'../downloads/{filename}'
+            download_path = (
+                f'../downloads/{filename}'
+            )
 
             file = open(download_path, 'wb')
 
@@ -192,13 +249,47 @@ try:
 
         elif operation == 'DELETE':
 
-            filename = input('Enter Filename: ')
+            filename = input(
+                'Enter Filename: '
+            )
 
-            command = f'{operation} {filename}'
+            command = (
+                f'{operation} {filename}'
+            )
 
-            client_socket.send(command.encode())
+            client_socket.send(
+                command.encode()
+            )
 
-            response = client_socket.recv(1024).decode()
+            response = client_socket.recv(
+                1024
+            ).decode()
+
+            print(response)
+
+        # SHARE OPERATION
+
+        elif operation == 'SHARE':
+
+            filename = input(
+                "Enter Filename: "
+            )
+
+            target_user = input(
+                "Enter username to share with: "
+            )
+
+            command = (
+                f'{operation} {filename} {target_user}'
+            )
+
+            client_socket.send(
+                command.encode()
+            )
+
+            response = client_socket.recv(
+                1024
+            ).decode()
 
             print(response)
 

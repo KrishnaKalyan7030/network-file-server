@@ -1,5 +1,16 @@
 {
-    "krishna": "1234",
-    "arjun": "abcd",
-    "zoho": "zoho123"
+    "krishna": {
+        "password": "123",
+        "role": "admin"
+    },
+
+    "arjun": {
+        "password": "456",
+        "role": "user"
+    },
+
+    "sita": {
+        "password": "789",
+        "role": "user"
+    }
 }

@@ -576,3 +576,18 @@ System Observability->
 Centralized audit logging
 
 persistent storage concep-> even if server restart logs store permanently as it si stored in file
+
+======== sharing system -> modular metadata design ===
+| File                 | Meaning                    |
+| -------------------- | -------------------------- |
+| users.json           | login users                |
+| file_metadata.json   | who owns file              |
+| shared_metadata.json | who can access shared file |
+
+user can download file only if he is owner else he is in shared list 
+
+
+
+========== Access Control List (ACL) ================
+
+======= Role-Based Access Control (RBAC) ============
