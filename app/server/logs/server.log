@@ -1,0 +1,126 @@
+[2026-05-28 20:16:58] New connection from ('192.168.0.175', 64681)
+[2026-05-28 20:17:05] krishna logged in successfully
+[2026-05-28 20:17:09] krishna viewed file list
+[2026-05-28 20:17:24] krishna disconnected
+[2026-05-28 20:17:28] New connection from ('192.168.0.175', 50869)
+[2026-05-28 20:17:39] Failed login attempt for sachin
+[2026-05-28 20:51:04] New connection from ('192.168.0.175', 51701)
+[2026-05-28 20:51:12] Invalid login format from ('192.168.0.175', 51701)
+[2026-05-28 20:51:14] New connection from ('192.168.0.175', 51704)
+[2026-05-28 20:51:18] krishna logged in successfully
+[2026-05-28 20:51:34] krishna viewed file list
+[2026-05-28 20:54:46] New connection from ('192.168.0.175', 54534)
+[2026-05-28 20:54:52] krishna logged in successfully
+[2026-05-28 20:56:56] krishna viewed file list
+[2026-05-28 20:57:03] krishna logged out
+[2026-05-28 20:57:07] New connection from ('192.168.0.175', 56029)
+[2026-05-28 20:57:11] arjun logged in successfully
+[2026-05-28 21:14:45] Server error with ('192.168.0.175', 56029): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:15:34] New connection from ('192.168.0.175', 53560)
+[2026-05-28 21:15:38] krishna logged in successfully
+[2026-05-28 21:15:42] krishna sent invalid operation HISTORY
+[2026-05-28 21:20:07] Server error with ('192.168.0.175', 53560): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:20:20] New connection from ('192.168.0.175', 57828)
+[2026-05-28 21:20:24] krishna logged in successfully
+[2026-05-28 21:20:27] krishna sent invalid operation HISTORY
+[2026-05-28 21:26:06] Server error with ('192.168.0.175', 57828): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 21:26:23] New connection from ('192.168.0.175', 55115)
+[2026-05-28 21:26:30] Invalid login format from ('192.168.0.175', 55115)
+[2026-05-28 21:26:32] New connection from ('192.168.0.175', 55127)
+[2026-05-28 21:26:37] krishna logged in successfully
+[2026-05-28 21:26:40] krishna sent invalid operation HISTORY
+[2026-05-28 21:27:12] New connection from ('192.168.0.175', 55157)
+[2026-05-28 21:27:17] arjun logged in successfully
+[2026-05-28 21:27:20] arjun viewed server history
+[2026-05-28 22:13:03] Server error with ('192.168.0.175', 55157): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-28 22:13:30] New connection from ('192.168.0.175', 55998)
+[2026-05-28 22:13:35] krishna logged in successfully
+[2026-05-28 22:14:02] krishna sent invalid operation SHARE
+[2026-05-28 22:27:26] New connection from ('192.168.0.175', 65242)
+[2026-05-28 22:27:30] krishna logged in successfully
+[2026-05-28 22:32:38] krishna shared Offer_Letter.pdf with arjun
+[2026-05-28 22:33:09] New connection from ('192.168.0.175', 49672)
+[2026-05-28 22:33:13] arjun logged in successfully
+[2026-05-28 22:33:27] arjun downloaded Offer_Letter.pdf
+[2026-05-28 22:43:57] krishna disconnected
+[2026-05-28 22:43:59] New connection from ('192.168.0.175', 62378)
+[2026-05-28 22:44:06] krishna logged in successfully
+[2026-05-28 22:45:07] krishna uploaded zoho.jpg
+[2026-05-28 22:45:33] arjun downloaded zoho.jpg
+[2026-05-28 22:46:09] New connection from ('192.168.0.175', 49398)
+[2026-05-28 22:46:24] zoho logged in successfully
+[2026-05-28 22:46:37] zoho downloaded zoho.jpg
+[2026-05-28 22:48:01] zoho uploaded upload.txt
+[2026-05-28 22:48:33] arjun downloaded upload.txt
+[2026-05-28 22:50:42] krishna viewed file list
+[2026-05-28 22:50:56] krishna downloaded upload.txt
+[2026-05-28 22:58:52] arjun downloaded upload.txt
+[2026-05-28 23:14:20] zoho viewed file list
+[2026-05-28 23:15:33] New connection from ('192.168.0.175', 64134)
+[2026-05-28 23:15:37] krishna logged in successfully
+[2026-05-28 23:15:40] krishna viewed file list
+[2026-05-28 23:16:14] New connection from ('192.168.0.175', 60360)
+[2026-05-28 23:16:17] arjun logged in successfully
+[2026-05-28 23:16:21] arjun viewed file list
+[2026-05-28 23:17:17] arjun unauthorized share attempt on zoho.jpg
+[2026-05-28 23:17:37] krishna viewed file list
+[2026-05-28 23:17:55] krishna requested missing file zoho.jpg
+[2026-05-28 23:18:30] arjun unauthorized share attempt on zoho.jpg
+[2026-05-28 23:20:21] krishna tried deleting missing file zoho.jpg
+[2026-05-28 23:41:11] New connection from ('192.168.0.175', 64895)
+[2026-05-28 23:41:25] arjun logged in successfully
+[2026-05-28 23:41:45] arjun unauthorized history access attempt
+[2026-05-28 23:42:10] New connection from ('192.168.0.175', 64519)
+[2026-05-28 23:42:14] Failed login attempt for krishna
+[2026-05-28 23:42:23] New connection from ('192.168.0.175', 53984)
+[2026-05-28 23:42:25] krishna logged in successfully
+[2026-05-28 23:42:40] krishna viewed server history
+[2026-05-29 18:28:26] New connection from ('192.168.0.175', 49912)
+[2026-05-29 18:28:31] Failed login attempt for krishna
+[2026-05-29 18:57:53] New connection from ('192.168.0.175', 64588)
+[2026-05-29 18:58:12] New user registered: sachin
+[2026-05-29 20:23:15] New connection from ('192.168.0.175', 62057)
+[2026-05-29 20:23:23] Failed login attempt for sachin
+[2026-05-29 20:23:33] New connection from ('192.168.0.175', 62063)
+[2026-05-29 20:23:40] New user registered: pratik
+[2026-05-29 20:23:41] New connection from ('192.168.0.175', 62071)
+[2026-05-29 20:23:49] Failed login attempt for pratik
+[2026-05-29 20:30:37] New connection from ('192.168.0.175', 49925)
+[2026-05-29 20:30:44] Failed login attempt for pratik
+[2026-05-29 20:33:47] New connection from ('192.168.0.175', 65469)
+[2026-05-29 20:33:52] Failed login attempt for pratik
+[2026-05-29 20:36:39] New connection from ('192.168.0.175', 63807)
+[2026-05-29 20:36:46] Failed login attempt for pratik
+[2026-05-29 20:40:09] New connection from ('192.168.0.175', 50482)
+[2026-05-29 20:40:16] pratik logged in successfully
+[2026-05-29 21:05:30] Server error with ('192.168.0.175', 50482): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:05:54] New connection from ('192.168.0.175', 59067)
+[2026-05-29 21:06:16] Failed login attempt for krishna
+[2026-05-29 21:06:22] New connection from ('192.168.0.175', 59071)
+[2026-05-29 21:06:27] Failed login attempt for pratik
+[2026-05-29 21:06:33] New connection from ('192.168.0.175', 59073)
+[2026-05-29 21:06:40] Invalid login format from ('192.168.0.175', 59073)
+[2026-05-29 21:06:41] New connection from ('192.168.0.175', 59075)
+[2026-05-29 21:06:46] pratik logged in successfully
+[2026-05-29 21:07:06] pratik sent invalid operation RENAME
+[2026-05-29 21:14:16] Server error with ('192.168.0.175', 59075): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:14:37] New connection from ('192.168.0.175', 52842)
+[2026-05-29 21:14:46] Failed login attempt for krishna
+[2026-05-29 21:14:52] New connection from ('192.168.0.175', 52846)
+[2026-05-29 21:14:57] pratik logged in successfully
+[2026-05-29 21:15:08] pratik sent invalid operation RENAME
+[2026-05-29 21:22:39] New connection from ('192.168.0.175', 54499)
+[2026-05-29 21:22:47] New user registered: ganesh
+[2026-05-29 21:22:56] New connection from ('192.168.0.175', 54504)
+[2026-05-29 21:23:05] ganesh logged in successfully
+[2026-05-29 21:24:44] ganesh uploaded ganesh.jpg
+[2026-05-29 21:25:05] ganesh viewed file list
+[2026-05-29 21:26:20] ganesh renamed ganesh.jpg to ganesh1.jpg
+[2026-05-29 21:26:37] ganesh uploaded ganesh.jpg
+[2026-05-29 21:27:03] ganesh renamed ganesh.jpg to gana.jpg
+[2026-05-29 21:28:48] Server error with ('192.168.0.175', 54504): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:29:14] New connection from ('192.168.0.175', 53343)
+[2026-05-29 21:29:22] ganesh logged in successfully
+[2026-05-29 21:29:42] ganesh viewed file list
+[2026-05-29 21:29:57] ganesh renamed gana.jpg to ganesh.jpg
+[2026-05-29 21:30:10] ganesh deleted ganesh1.jpg
