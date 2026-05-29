@@ -75,3 +75,52 @@
 [2026-05-28 23:42:23] New connection from ('192.168.0.175', 53984)
 [2026-05-28 23:42:25] krishna logged in successfully
 [2026-05-28 23:42:40] krishna viewed server history
+[2026-05-29 18:28:26] New connection from ('192.168.0.175', 49912)
+[2026-05-29 18:28:31] Failed login attempt for krishna
+[2026-05-29 18:57:53] New connection from ('192.168.0.175', 64588)
+[2026-05-29 18:58:12] New user registered: sachin
+[2026-05-29 20:23:15] New connection from ('192.168.0.175', 62057)
+[2026-05-29 20:23:23] Failed login attempt for sachin
+[2026-05-29 20:23:33] New connection from ('192.168.0.175', 62063)
+[2026-05-29 20:23:40] New user registered: pratik
+[2026-05-29 20:23:41] New connection from ('192.168.0.175', 62071)
+[2026-05-29 20:23:49] Failed login attempt for pratik
+[2026-05-29 20:30:37] New connection from ('192.168.0.175', 49925)
+[2026-05-29 20:30:44] Failed login attempt for pratik
+[2026-05-29 20:33:47] New connection from ('192.168.0.175', 65469)
+[2026-05-29 20:33:52] Failed login attempt for pratik
+[2026-05-29 20:36:39] New connection from ('192.168.0.175', 63807)
+[2026-05-29 20:36:46] Failed login attempt for pratik
+[2026-05-29 20:40:09] New connection from ('192.168.0.175', 50482)
+[2026-05-29 20:40:16] pratik logged in successfully
+[2026-05-29 21:05:30] Server error with ('192.168.0.175', 50482): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:05:54] New connection from ('192.168.0.175', 59067)
+[2026-05-29 21:06:16] Failed login attempt for krishna
+[2026-05-29 21:06:22] New connection from ('192.168.0.175', 59071)
+[2026-05-29 21:06:27] Failed login attempt for pratik
+[2026-05-29 21:06:33] New connection from ('192.168.0.175', 59073)
+[2026-05-29 21:06:40] Invalid login format from ('192.168.0.175', 59073)
+[2026-05-29 21:06:41] New connection from ('192.168.0.175', 59075)
+[2026-05-29 21:06:46] pratik logged in successfully
+[2026-05-29 21:07:06] pratik sent invalid operation RENAME
+[2026-05-29 21:14:16] Server error with ('192.168.0.175', 59075): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:14:37] New connection from ('192.168.0.175', 52842)
+[2026-05-29 21:14:46] Failed login attempt for krishna
+[2026-05-29 21:14:52] New connection from ('192.168.0.175', 52846)
+[2026-05-29 21:14:57] pratik logged in successfully
+[2026-05-29 21:15:08] pratik sent invalid operation RENAME
+[2026-05-29 21:22:39] New connection from ('192.168.0.175', 54499)
+[2026-05-29 21:22:47] New user registered: ganesh
+[2026-05-29 21:22:56] New connection from ('192.168.0.175', 54504)
+[2026-05-29 21:23:05] ganesh logged in successfully
+[2026-05-29 21:24:44] ganesh uploaded ganesh.jpg
+[2026-05-29 21:25:05] ganesh viewed file list
+[2026-05-29 21:26:20] ganesh renamed ganesh.jpg to ganesh1.jpg
+[2026-05-29 21:26:37] ganesh uploaded ganesh.jpg
+[2026-05-29 21:27:03] ganesh renamed ganesh.jpg to gana.jpg
+[2026-05-29 21:28:48] Server error with ('192.168.0.175', 54504): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 21:29:14] New connection from ('192.168.0.175', 53343)
+[2026-05-29 21:29:22] ganesh logged in successfully
+[2026-05-29 21:29:42] ganesh viewed file list
+[2026-05-29 21:29:57] ganesh renamed gana.jpg to ganesh.jpg
+[2026-05-29 21:30:10] ganesh deleted ganesh1.jpg

@@ -2,33 +2,79 @@ import socket
 import threading
 import os
 import json
+import hashlib
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-LOG_FILE = os.path.join(BASE_DIR,'../../logs/server.log')
+LOG_FILE = os.path.join(
+    BASE_DIR,
+    '../../logs/server.log'
+)
 
-METADATA_FILE = os.path.join(BASE_DIR,'../../file_metadata.json')
+METADATA_FILE = os.path.join(
+    BASE_DIR,
+    '../../file_metadata.json'
+)
 
-USERS_FILE = os.path.join(BASE_DIR,'../../users.json')
+USERS_FILE = os.path.join(
+    BASE_DIR,
+    '../../users.json'
+)
 
-SHARED_METADATA_FILE = os.path.join(BASE_DIR,'../../shared_metadata.json')
+SHARED_METADATA_FILE = os.path.join(
+    BASE_DIR,
+    '../../shared_metadata.json'
+)
 
-UPLOAD_FOLDER = os.path.join(BASE_DIR,'../uploads')
+UPLOAD_FOLDER = os.path.join(
+    BASE_DIR,
+    '../uploads'
+)
+
+# Create folders if not exist
+os.makedirs(
+    os.path.dirname(LOG_FILE),
+    exist_ok=True
+)
+
+os.makedirs(
+    UPLOAD_FOLDER,
+    exist_ok=True
+)
 
 # Load file ownership metadata
-with open(METADATA_FILE, 'r') as file:
-    file_metadata = json.load(file)
+if os.path.exists(METADATA_FILE):
 
-# Load users from JSON file
-with open(USERS_FILE, 'r') as file:
+    with open(METADATA_FILE, 'r') as file:
 
-    users = json.load(file)
+        file_metadata = json.load(file)
 
-# file sharing metadata
-with open(SHARED_METADATA_FILE, 'r') as file:
+else:
 
-    shared_metadata = json.load(file)
+    file_metadata = {}
+
+# Load users
+if os.path.exists(USERS_FILE):
+
+    with open(USERS_FILE, 'r') as file:
+
+        users = json.load(file)
+
+else:
+
+    users = {}
+
+# Load shared metadata
+if os.path.exists(SHARED_METADATA_FILE):
+
+    with open(SHARED_METADATA_FILE, 'r') as file:
+
+        shared_metadata = json.load(file)
+
+else:
+
+    shared_metadata = {}
 
 def log_activity(message):
 
@@ -46,49 +92,100 @@ def log_activity(message):
 
         file.write(log_message)
 
+def hash_password(password):
+
+    return hashlib.sha256(
+        password.encode()
+    ).hexdigest()
+
 def handle_client(client_socket, client_add):
 
     try:
+
         # AUTHENTICATION PHASE
+
         login_data = client_socket.recv(
             1024
         ).decode()
 
         login_parts = login_data.split()
 
-        # Validate login format
         if len(login_parts) != 3:
 
             client_socket.send(
                 "AUTH_FAILED".encode()
             )
 
-            log_activity(
-                f"Invalid login format from {client_add}"
-            )
-
             client_socket.close()
 
             return
 
-        command = login_parts[0]
+        command = login_parts[0].upper()
 
         username = login_parts[1]
 
         password = login_parts[2]
 
-        # Verify credentials
-        if command == 'LOGIN':
+        # REGISTER OPERATION
+
+        if command == 'REGISTER':
+
+            if username in users:
+
+                client_socket.send(
+                    "USER_EXISTS".encode()
+                )
+
+                return
+
+            hashed_password = hash_password(
+                password
+            )
+
+            users[username] = {
+
+                "password": hashed_password,
+
+                "role": "user"
+            }
+
+            with open(
+                USERS_FILE,
+                'w'
+            ) as file:
+
+                json.dump(
+                    users,
+                    file,
+                    indent=4
+                )
+
+            log_activity(
+                f"New user registered: {username}"
+            )
+
+            client_socket.send(
+                "REGISTER_SUCCESS".encode()
+            )
+
+            return
+
+        # LOGIN OPERATION
+
+        elif command == 'LOGIN':
 
             if (
-                username in users
-                and
-                users[username]['password']== password
+                username in users and
+                users[username]['password']
+                ==
+                hash_password(password)
             ):
 
                 print(
                     f"{username} authenticated successfully"
                 )
+
+                user_role = users[username]['role']
 
                 log_activity(
                     f"{username} logged in successfully"
@@ -98,28 +195,20 @@ def handle_client(client_socket, client_add):
                     "AUTH_SUCCESS".encode()
                 )
 
-                user_role = users[username]["role"]
-
-                print(f"{username} role is {user_role}")
-                
                 user_folder = os.path.join(
                     UPLOAD_FOLDER,
                     username
                 )
-                
+
                 os.makedirs(
                     user_folder,
                     exist_ok=True
                 )
-            
+
             else:
 
                 print(
                     f"Authentication failed for {username}"
-                )
-
-                log_activity(
-                    f"Failed login attempt for {username}"
                 )
 
                 client_socket.send(
@@ -136,10 +225,6 @@ def handle_client(client_socket, client_add):
                 "AUTH_FAILED".encode()
             )
 
-            log_activity(
-                f"Unknown authentication command from {client_add}"
-            )
-
             client_socket.close()
 
             return
@@ -152,25 +237,11 @@ def handle_client(client_socket, client_add):
                 1024
             ).decode()
 
-            # client disconnected
             if not command:
-
-                print(
-                    f"{client_add} disconnected"
-                )
-
-                log_activity(
-                    f"{username} disconnected"
-                )
 
                 break
 
-            # logout operation
             if command.upper() == 'LOGOUT':
-
-                print(
-                    f"{username} logged out"
-                )
 
                 log_activity(
                     f"{username} logged out"
@@ -180,14 +251,7 @@ def handle_client(client_socket, client_add):
 
             parts = command.split()
 
-            # Empty command validation
             if len(parts) < 1:
-
-                print("Invalid Command")
-
-                log_activity(
-                    f"{username} sent invalid command"
-                )
 
                 continue
 
@@ -203,32 +267,34 @@ def handle_client(client_socket, client_add):
 
                 if len(parts) < 3:
 
-                    print(
-                        "Filename or filesize missing"
-                    )
-
-                    log_activity(
-                        f"{username} upload failed due to missing data"
-                    )
-
                     continue
 
                 filename = parts[1]
 
                 filesize = int(parts[2])
 
-                print(
-                    f"UPLOAD request for {filename}"
-                )
-                
                 user_folder = os.path.join(
                     UPLOAD_FOLDER,
                     username
                 )
-                
+
                 filepath = os.path.join(
                     user_folder,
                     filename
+                )
+
+                # duplicate file check
+
+                if os.path.exists(filepath):
+
+                    client_socket.send(
+                        "FILE_ALREADY_EXISTS".encode()
+                    )
+
+                    continue
+
+                client_socket.send(
+                    "READY".encode()
                 )
 
                 with open(filepath, 'wb') as file:
@@ -248,16 +314,8 @@ def handle_client(client_socket, client_add):
 
                         received_size += len(data)
 
-                print('Upload Complete')
-
-                log_activity(
-                    f"{username} uploaded {filename}"
-                )
-
-                # Save file owner
                 file_metadata[filename] = username
 
-                # Save metadata permanently
                 with open(
                     METADATA_FILE,
                     'w'
@@ -269,6 +327,10 @@ def handle_client(client_socket, client_add):
                         indent=4
                     )
 
+                log_activity(
+                    f"{username} uploaded {filename}"
+                )
+
                 client_socket.send(
                     "UPLOAD_SUCCESS".encode()
                 )
@@ -279,47 +341,35 @@ def handle_client(client_socket, client_add):
 
                 if len(parts) < 2:
 
-                    print(
-                        "Filename missing"
-                    )
-
-                    log_activity(
-                        f"{username} download failed due to missing filename"
-                    )
-
                     continue
 
                 filename = parts[1]
 
-                print(
-                    f"DOWNLOAD request for {filename}"
+                owner = file_metadata.get(
+                    filename
                 )
 
-                owner = file_metadata.get(filename)
-                
+                if not owner:
+
+                    client_socket.send(
+                        "FILE_NOT_FOUND".encode()
+                    )
+
+                    continue
+
                 filepath = os.path.join(
                     UPLOAD_FOLDER,
                     owner,
                     filename
                 )
 
-                # file existence check
                 if not os.path.exists(filepath):
 
                     client_socket.send(
                         "FILE_NOT_FOUND".encode()
                     )
 
-                    log_activity(
-                        f"{username} requested missing file {filename}"
-                    )
-
                     continue
-
-                # authorization check
-                owner = file_metadata.get(
-                    filename
-                )
 
                 shared_users = shared_metadata.get(
                     filename,
@@ -327,8 +377,9 @@ def handle_client(client_socket, client_add):
                 )
 
                 if (
-                    username != owner and 
-                  username not in shared_users and user_role != 'admin'
+                    username != owner and
+                    username not in shared_users and
+                    user_role != 'admin'
                 ):
 
                     client_socket.send(
@@ -355,10 +406,6 @@ def handle_client(client_socket, client_add):
 
                 if acknowledgement != 'READY':
 
-                    log_activity(
-                        f"{username} download acknowledgement failed for {filename}"
-                    )
-
                     continue
 
                 with open(filepath, 'rb') as file:
@@ -372,10 +419,120 @@ def handle_client(client_socket, client_add):
 
                         client_socket.send(chunk)
 
-                print("Download Complete")
-
                 log_activity(
                     f"{username} downloaded {filename}"
+                )
+
+            # RENAME OPERATION
+
+            elif operation == 'RENAME':
+
+                if len(parts) < 3:
+
+                    client_socket.send(
+                        "Invalid RENAME command".encode()
+                    )
+
+                    continue
+
+                old_filename = parts[1]
+
+                new_filename = parts[2]
+
+                owner = file_metadata.get(
+                    old_filename
+                )
+
+                if not owner:
+
+                    client_socket.send(
+                        "File not found".encode()
+                    )
+
+                    continue
+
+                if (
+                    owner != username and
+                    user_role != 'admin'
+                ):
+
+                    client_socket.send(
+                        "Access Denied".encode()
+                    )
+
+                    continue
+
+                old_filepath = os.path.join(
+                    UPLOAD_FOLDER,
+                    owner,
+                    old_filename
+                )
+
+                new_filepath = os.path.join(
+                    UPLOAD_FOLDER,
+                    owner,
+                    new_filename
+                )
+
+                if not os.path.exists(old_filepath):
+
+                    client_socket.send(
+                        "File not found".encode()
+                    )
+
+                    continue
+
+                if os.path.exists(new_filepath):
+
+                    client_socket.send(
+                        "New filename already exists".encode()
+                    )
+
+                    continue
+
+                os.rename(
+                    old_filepath,
+                    new_filepath
+                )
+
+                file_metadata[new_filename] = (
+                    file_metadata.pop(old_filename)
+                )
+
+                if old_filename in shared_metadata:
+
+                    shared_metadata[new_filename] = (
+                        shared_metadata.pop(old_filename)
+                    )
+
+                with open(
+                    METADATA_FILE,
+                    'w'
+                ) as file:
+
+                    json.dump(
+                        file_metadata,
+                        file,
+                        indent=4
+                    )
+
+                with open(
+                    SHARED_METADATA_FILE,
+                    'w'
+                ) as file:
+
+                    json.dump(
+                        shared_metadata,
+                        file,
+                        indent=4
+                    )
+
+                client_socket.send(
+                    "File renamed successfully".encode()
+                )
+
+                log_activity(
+                    f"{username} renamed {old_filename} to {new_filename}"
                 )
 
             # LIST OPERATION
@@ -383,33 +540,80 @@ def handle_client(client_socket, client_add):
             elif operation == 'LIST':
 
                 response = ""
-                
-                # loop through every user folder
-                for owner_folder in os.listdir(UPLOAD_FOLDER):
-                
-                    owner_path = os.path.join(
+
+                if not os.path.exists(UPLOAD_FOLDER):
+
+                    os.makedirs(
                         UPLOAD_FOLDER,
-                        owner_folder
+                        exist_ok=True
                     )
-                
-                    # ensure it is a folder
-                    if os.path.isdir(owner_path):
-                
-                        # loop through files inside user folder
-                        for file in os.listdir(owner_path):
-                
-                            response += (
-                                f"{file} -> {owner_folder}\n"
-                            )
-                
-                # no files found
+
+                # admin can see everything
+
+                if user_role == 'admin':
+
+                    for owner_folder in os.listdir(
+                        UPLOAD_FOLDER
+                    ):
+
+                        owner_path = os.path.join(
+                            UPLOAD_FOLDER,
+                            owner_folder
+                        )
+
+                        if os.path.isdir(owner_path):
+
+                            for file in os.listdir(
+                                owner_path
+                            ):
+
+                                response += (
+                                    f"{file} -> {owner_folder}\n"
+                                )
+
+                # normal user
+
+                else:
+
+                    for owner_folder in os.listdir(
+                        UPLOAD_FOLDER
+                    ):
+
+                        owner_path = os.path.join(
+                            UPLOAD_FOLDER,
+                            owner_folder
+                        )
+
+                        if os.path.isdir(owner_path):
+
+                            for file in os.listdir(
+                                owner_path
+                            ):
+
+                                owner = file_metadata.get(file)
+
+                                shared_users = shared_metadata.get(
+                                    file,
+                                    []
+                                )
+
+                                if (
+                                    username == owner
+                                    or
+                                    username in shared_users
+                                ):
+
+                                    response += (
+                                        f"{file} -> {owner_folder}\n"
+                                    )
+
                 if response == "":
-                
+
                     response = "No files available"
 
-                client_socket.send(response.encode())
-
-                print("File list sent")
+                client_socket.send(
+                    response.encode()
+                )
 
                 log_activity(
                     f"{username} viewed file list"
@@ -431,12 +635,24 @@ def handle_client(client_socket, client_add):
 
                 target_user = parts[2]
 
-                filepath = os.path.join(
-                    UPLOAD_FOLDER,
+                owner = file_metadata.get(
                     filename
                 )
 
-                # file existence check
+                if not owner:
+
+                    client_socket.send(
+                        "File not found".encode()
+                    )
+
+                    continue
+
+                filepath = os.path.join(
+                    UPLOAD_FOLDER,
+                    owner,
+                    filename
+                )
+
                 if not os.path.exists(filepath):
 
                     client_socket.send(
@@ -445,23 +661,14 @@ def handle_client(client_socket, client_add):
 
                     continue
 
-                # ownership check
-                if (
-                    file_metadata.get(filename)
-                    != username
-                ):
+                if owner != username:
 
                     client_socket.send(
                         "Access Denied".encode()
                     )
 
-                    log_activity(
-                        f"{username} unauthorized share attempt on {filename}"
-                    )
-
                     continue
 
-                # user existence check
                 if target_user not in users:
 
                     client_socket.send(
@@ -470,16 +677,11 @@ def handle_client(client_socket, client_add):
 
                     continue
 
-                # initialize sharing list
                 if filename not in shared_metadata:
 
                     shared_metadata[filename] = []
 
-                # duplicate sharing check
-                if (
-                    target_user
-                    in shared_metadata[filename]
-                ):
+                if target_user in shared_metadata[filename]:
 
                     client_socket.send(
                         "File already shared".encode()
@@ -487,12 +689,10 @@ def handle_client(client_socket, client_add):
 
                     continue
 
-                # add shared user
                 shared_metadata[filename].append(
                     target_user
                 )
 
-                # save permanently
                 with open(
                     SHARED_METADATA_FILE,
                     'w'
@@ -508,10 +708,6 @@ def handle_client(client_socket, client_add):
                     "File shared successfully".encode()
                 )
 
-                print(
-                    f"{filename} shared with {target_user}"
-                )
-
                 log_activity(
                     f"{username} shared {filename} with {target_user}"
                 )
@@ -522,34 +718,35 @@ def handle_client(client_socket, client_add):
 
                 if len(parts) < 2:
 
-                    print(
-                        "Filename missing"
-                    )
-
-                    log_activity(
-                        f"{username} delete failed due to missing filename"
-                    )
-
                     continue
 
                 filename = parts[1]
 
-                filepath = os.path.join(
-                    UPLOAD_FOLDER,
-                    username,
+                owner = file_metadata.get(
                     filename
                 )
 
-                # Authorization check
+                if not owner:
+
+                    client_socket.send(
+                        "File not found".encode()
+                    )
+
+                    continue
+
+                filepath = os.path.join(
+                    UPLOAD_FOLDER,
+                    owner,
+                    filename
+                )
+
                 if (
-                   file_metadata.get(filename) != username  and user_role != 'admin'):
+                    owner != username and
+                    user_role != 'admin'
+                ):
 
                     client_socket.send(
                         "Access Denied".encode()
-                    )
-
-                    log_activity(
-                        f"{username} unauthorized delete attempt on {filename}"
                     )
 
                     continue
@@ -558,15 +755,12 @@ def handle_client(client_socket, client_add):
 
                     os.remove(filepath)
 
-                    # Remove ownership metadata
                     del file_metadata[filename]
 
-                    # Remove sharing metadata
                     if filename in shared_metadata:
 
                         del shared_metadata[filename]
 
-                    # Update metadata file
                     with open(
                         METADATA_FILE,
                         'w'
@@ -578,7 +772,6 @@ def handle_client(client_socket, client_add):
                             indent=4
                         )
 
-                    # Update sharing metadata
                     with open(
                         SHARED_METADATA_FILE,
                         'w'
@@ -604,40 +797,34 @@ def handle_client(client_socket, client_add):
                         "File not found".encode()
                     )
 
-                    log_activity(
-                        f"{username} tried deleting missing file {filename}"
-                    )
-
             # HISTORY OPERATION
 
             elif operation == 'HISTORY':
 
                 if user_role != 'admin':
 
-                    client_socket.send("ACCESS_DENIED".encode())
-                
-                    log_activity(f"{username} unauthorized history access attempt")
-                
+                    client_socket.send(
+                        "ACCESS_DENIED".encode()
+                    )
+
                     continue
 
-                with open(
-                    LOG_FILE,
-                    'r'
-                ) as file:
+                if not os.path.exists(LOG_FILE):
 
-                    history = file.read()
+                    history = "No Logs Available"
 
-                if not history:
+                else:
 
-                    history = (
-                        'No Logs Available'
-                    )
+                    with open(
+                        LOG_FILE,
+                        'r'
+                    ) as file:
+
+                        history = file.read()
 
                 client_socket.send(
                     history.encode()
                 )
-
-                print('History sent')
 
                 log_activity(
                     f"{username} viewed server history"
@@ -648,10 +835,6 @@ def handle_client(client_socket, client_add):
             else:
 
                 print("Invalid operation")
-
-                log_activity(
-                    f"{username} sent invalid operation {operation}"
-                )
 
     except Exception as e:
 
@@ -670,7 +853,6 @@ def handle_client(client_socket, client_add):
         print(
             f"Connection closed for {client_add}"
         )
-
 
 # SERVER SETUP
 

@@ -5,31 +5,90 @@ try:
 
     client_socket = socket.socket()
 
-    client_socket.connect(('192.168.0.175', 9999))
+    client_socket.connect(
+        ('192.168.0.175', 9999)
+    )
 
     print('Connected to server')
 
-    username = input("Enter username: ")
+    # AUTHENTICATION PHASE
 
-    password = input('Enter password: ')
+    choice = input(
+        "Choose LOGIN or REGISTER: "
+    ).upper()
 
-    login_command = f'LOGIN {username} {password}'
+    username = input(
+        "Enter username: "
+    )
 
-    client_socket.send(login_command.encode())
+    password = input(
+        "Enter password: "
+    )
 
-    auth_response = client_socket.recv(1024).decode()
+    command = (
+        f'{choice} {username} {password}'
+    )
 
-    if auth_response != 'AUTH_SUCCESS':
+    client_socket.send(
+        command.encode()
+    )
 
-        print("Authentication Failed")
+    response = client_socket.recv(
+        1024
+    ).decode()
+
+    # REGISTER SUCCESS
+
+    if response == 'REGISTER_SUCCESS':
+
+        print(
+            "Registration Successful"
+        )
 
         client_socket.close()
 
         exit()
 
+    # USER ALREADY EXISTS
+
+    elif response == 'USER_EXISTS':
+
+        print(
+            "Username already exists"
+        )
+
+        client_socket.close()
+
+        exit()
+
+    # LOGIN FAILED
+
+    elif response != 'AUTH_SUCCESS':
+
+        print(
+            "Authentication Failed"
+        )
+
+        client_socket.close()
+
+        exit()
+
+    # LOGIN SUCCESS
+
     else:
 
-        print("Authentication Successful")
+        print(
+            "Authentication Successful"
+        )
+
+    # CREATE DOWNLOADS FOLDER IF NOT EXISTS
+
+    os.makedirs(
+        '../downloads',
+        exist_ok=True
+    )
+
+    # OPERATION PHASE
 
     while True:
 
@@ -39,6 +98,7 @@ try:
                 UPLOAD
                 DOWNLOAD
                 LIST
+                RENAME
                 DELETE
                 HISTORY
                 SHARE
@@ -58,7 +118,9 @@ try:
                 operation.encode()
             )
 
-            print("Logged out successfully")
+            print(
+                "Logged out successfully"
+            )
 
             break
 
@@ -80,24 +142,58 @@ try:
 
             print(response)
 
+        # RENAME OPERATION
+
+        elif operation == 'RENAME':
+
+            old_filename = input(
+                "Enter old filename: "
+            )
+
+            new_filename = input(
+                "Enter new filename: "
+            )
+
+            command = (
+                f'{operation} {old_filename} {new_filename}'
+            )
+
+            client_socket.send(
+                command.encode()
+            )
+
+            response = client_socket.recv(
+                1024
+            ).decode()
+
+            print(response)
+
         # HISTORY OPERATION
 
         elif operation == 'HISTORY':
 
-            client_socket.send(operation.encode())
-        
-            history = client_socket.recv(4096).decode()
-        
+            client_socket.send(
+                operation.encode()
+            )
+
+            history = client_socket.recv(
+                4096
+            ).decode()
+
+            # ACCESS DENIED
+
             if history == 'ACCESS_DENIED':
-        
+
                 print(
                     "Only admin can view server history"
                 )
-        
+
             else:
-        
-                print("\nSERVER HISTORY:\n")
-        
+
+                print(
+                    "\nSERVER HISTORY:\n"
+                )
+
                 print(history)
 
         # UPLOAD OPERATION
@@ -108,11 +204,18 @@ try:
                 'Enter Filename: '
             )
 
-            filepath = f'../files/{filename}'
+            filepath = os.path.join(
+                '../files',
+                filename
+            )
+
+            # FILE EXISTENCE CHECK
 
             if not os.path.exists(filepath):
 
-                print("File does not exist")
+                print(
+                    "File does not exist"
+                )
 
                 continue
 
@@ -154,15 +257,13 @@ try:
 
             file.close()
 
-            print(
-                "\nFile uploaded successfully"
-            )
-
             response = client_socket.recv(
                 1024
             ).decode()
 
-            print(response)
+            print(
+                f"\n{response}"
+            )
 
         # DOWNLOAD OPERATION
 
@@ -184,7 +285,8 @@ try:
                 1024
             ).decode()
 
-            # access denied
+            # ACCESS DENIED
+
             if response == 'ACCESS_DENIED':
 
                 print(
@@ -193,7 +295,8 @@ try:
 
                 continue
 
-            # file not found
+            # FILE NOT FOUND
+
             elif response == 'FILE_NOT_FOUND':
 
                 print(
@@ -202,24 +305,31 @@ try:
 
                 continue
 
-            # filesize received
+            # FILESIZE RECEIVED
+
             filesize = int(response)
 
             client_socket.send(
                 "READY".encode()
             )
 
-            download_path = (
-                f'../downloads/{filename}'
+            download_path = os.path.join(
+                '../downloads',
+                filename
             )
 
-            file = open(download_path, 'wb')
+            file = open(
+                download_path,
+                'wb'
+            )
 
             received_size = 0
 
             while received_size < filesize:
 
-                data = client_socket.recv(1024)
+                data = client_socket.recv(
+                    1024
+                )
 
                 if not data:
                     break
@@ -239,7 +349,9 @@ try:
 
             file.close()
 
-            print("\nDownload completed")
+            print(
+                "\nDownload completed"
+            )
 
             print(
                 f"File saved to {download_path}"
@@ -297,7 +409,9 @@ try:
 
         else:
 
-            print("Invalid operation")
+            print(
+                "Invalid operation"
+            )
 
 except Exception as e:
 
