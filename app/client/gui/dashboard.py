@@ -23,40 +23,29 @@ class Dashboard(ctk.CTk):
         self.configure(fg_color="#0b1220")
 
         self.build_ui()
-        self.list_files()
-
-    # ========================= UI ========================= #
+        self.after(100, self.list_files)
 
     def build_ui(self):
 
-        # ================= HEADER =================
         header = ctk.CTkFrame(self, height=70, fg_color="#0f172a")
         header.pack(fill="x", padx=10, pady=10)
 
-        title = ctk.CTkLabel(
+        ctk.CTkLabel(
             header,
             text="🗂 Network File Server",
             font=("Arial", 24, "bold")
-        )
-        title.pack(side="left", padx=20)
+        ).pack(side="left", padx=20)
 
-        user_label = ctk.CTkLabel(
+        ctk.CTkLabel(
             header,
             text=f"User: {self.username}",
             font=("Arial", 14)
-        )
-        user_label.pack(side="right", padx=20)
+        ).pack(side="right", padx=20)
 
-        # ================= MAIN =================
         main_frame = ctk.CTkFrame(self, fg_color="transparent")
         main_frame.pack(fill="both", expand=True, padx=10, pady=(0, 10))
 
-        # ================= SIDEBAR =================
-        left_frame = ctk.CTkFrame(
-            main_frame,
-            width=240,
-            fg_color="#0f172a"
-        )
+        left_frame = ctk.CTkFrame(main_frame, width=240, fg_color="#0f172a")
         left_frame.pack(side="left", fill="y", padx=(10, 10), pady=10)
         left_frame.pack_propagate(False)
 
@@ -91,7 +80,6 @@ class Dashboard(ctk.CTk):
             )
             btn.pack(pady=6, padx=10)
 
-        # ================= RIGHT PANEL =================
         right_frame = ctk.CTkFrame(main_frame, fg_color="#0f172a")
         right_frame.pack(side="left", fill="both", expand=True, padx=(0, 10), pady=10)
 
@@ -115,7 +103,6 @@ class Dashboard(ctk.CTk):
             "Welcome to Network File Server\n\nFiles will appear here..."
         )
 
-        # ================= STATUS BAR =================
         self.status_label = ctk.CTkLabel(
             self,
             text="Ready • Connected",
@@ -124,13 +111,9 @@ class Dashboard(ctk.CTk):
         )
         self.status_label.pack(side="bottom", pady=5)
 
-    # ================= STATUS ================= #
-
     def set_status(self, msg):
         self.status_label.configure(text=msg)
         self.update_idletasks()
-
-    # ================= LIST FILES ================= #
 
     def list_files(self):
         try:
@@ -149,18 +132,14 @@ class Dashboard(ctk.CTk):
             messagebox.showerror("Error", str(e))
             self.set_status("Error loading files")
 
-    # ================= LOGOUT ================= #
-
     def logout(self):
         try:
             self.client_socket.send("LOGOUT".encode())
             self.client_socket.close()
-        except:
+        except Exception:
             pass
 
         self.destroy()
-
-    # ================= UPLOAD ================= #
 
     def upload_file(self):
 
@@ -179,8 +158,14 @@ class Dashboard(ctk.CTk):
 
             response = self.client_socket.recv(1024).decode()
 
+            if response == "FILE_ALREADY_EXISTS":
+                messagebox.showerror("Error", "File already exists on server")
+                self.set_status("Upload failed")
+                return
+
             if response != "READY":
-                messagebox.showerror("Error", "Server not ready")
+                messagebox.showerror("Error", f"Server error: {response}")
+                self.set_status("Upload failed")
                 return
 
             with open(filepath, "rb") as file:
@@ -202,10 +187,6 @@ class Dashboard(ctk.CTk):
             if server_response == "UPLOAD_SUCCESS":
                 messagebox.showinfo("Success", "File uploaded successfully")
                 self.set_status("Upload complete")
-
-            elif server_response == "FILE_ALREADY_EXISTS":
-                messagebox.showerror("Error", "File already exists")
-                self.set_status("Upload failed")
                 self.list_files()
 
             else:
@@ -215,8 +196,6 @@ class Dashboard(ctk.CTk):
         except Exception as e:
             messagebox.showerror("Error", str(e))
             self.set_status("Upload error")
-
-    # ================= DOWNLOAD ================= #
 
     def download_file(self):
 
@@ -233,15 +212,16 @@ class Dashboard(ctk.CTk):
             self.set_status("Downloading...")
 
             self.client_socket.send(f"DOWNLOAD {filename}".encode())
-
             response = self.client_socket.recv(1024).decode()
 
             if response == "ACCESS_DENIED":
                 messagebox.showerror("Error", "Access denied")
+                self.set_status("Download denied")
                 return
 
             if response == "FILE_NOT_FOUND":
                 messagebox.showerror("Error", "File not found")
+                self.set_status("File not found")
                 return
 
             filesize = int(response)
@@ -260,14 +240,15 @@ class Dashboard(ctk.CTk):
                     file.write(data)
                     received += len(data)
 
+                    progress = (received / filesize) * 100
+                    self.set_status(f"Downloading... {progress:.1f}%")
+
             messagebox.showinfo("Success", f"Downloaded to:\n{path}")
             self.set_status("Download complete")
 
         except Exception as e:
             messagebox.showerror("Error", str(e))
             self.set_status("Download error")
-
-    # ================= RENAME ================= #
 
     def rename_file(self):
 
@@ -292,8 +273,6 @@ class Dashboard(ctk.CTk):
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-    # ================= DELETE ================= #
-
     def delete_file(self):
 
         filename = ctk.CTkInputDialog(
@@ -316,8 +295,6 @@ class Dashboard(ctk.CTk):
 
         except Exception as e:
             messagebox.showerror("Error", str(e))
-
-    # ================= SHARE ================= #
 
     def share_file(self):
 
@@ -349,13 +326,20 @@ class Dashboard(ctk.CTk):
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
-    # ================= HISTORY ================= #
-
     def view_history(self):
 
         try:
             self.client_socket.send("HISTORY".encode())
-            history = self.client_socket.recv(4096).decode()
+
+            # Read in chunks since log file can be large
+            history_parts = []
+            while True:
+                part = self.client_socket.recv(4096).decode()
+                history_parts.append(part)
+                if len(part) < 4096:
+                    break
+
+            history = ''.join(history_parts)
 
             if history == "ACCESS_DENIED":
                 messagebox.showerror("Error", "Admin only feature")
@@ -367,12 +351,3 @@ class Dashboard(ctk.CTk):
 
         except Exception as e:
             messagebox.showerror("Error", str(e))
-
-
-
-
-
-
-
-
-

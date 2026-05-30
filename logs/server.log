@@ -193,3 +193,86 @@
 [2026-05-30 13:33:02] New connection from ('127.0.0.1', 50536)
 [2026-05-30 13:33:02] Arjun logged in successfully
 [2026-05-30 13:33:04] Arjun viewed file list
+[2026-05-30 21:03:54] New connection from ('127.0.0.1', 49807)
+[2026-05-30 21:03:54] New user registered: karan
+[2026-05-30 21:03:58] New connection from ('127.0.0.1', 49809)
+[2026-05-30 21:03:58] karan logged in successfully
+[2026-05-30 21:04:00] karan viewed file list
+[2026-05-30 21:05:10] karan uploaded DSC_9088.JPG
+[2026-05-30 21:05:14] karan viewed file list
+[2026-05-30 21:33:31] New connection from ('127.0.0.1', 58455)
+[2026-05-30 21:33:31] Arjun logged in successfully
+[2026-05-30 21:33:32] Arjun viewed file list
+[2026-05-30 21:33:35] Arjun viewed file list
+[2026-05-30 21:33:36] Arjun viewed file list
+[2026-05-30 21:33:36] Arjun viewed file list
+[2026-05-30 21:33:55] Arjun uploaded Anivex.jpeg
+[2026-05-30 21:33:57] Arjun viewed file list
+[2026-05-30 21:34:30] Arjun viewed file list
+[2026-05-30 21:34:51] Arjun downloaded Anivex.jpeg
+[2026-05-30 21:34:57] Arjun viewed file list
+[2026-05-30 21:34:57] Arjun viewed file list
+[2026-05-30 21:34:58] Arjun viewed file list
+[2026-05-30 21:35:04] Arjun viewed server history
+[2026-05-30 21:36:47] New connection from ('127.0.0.1', 59872)
+[2026-05-30 21:36:47] Arjun logged in successfully
+[2026-05-30 21:36:48] Arjun viewed file list
+[2026-05-30 21:37:07] Arjun renamed Anivex.jpeg to anivex
+[2026-05-30 21:37:13] Arjun viewed server history
+[2026-05-30 21:37:22] Arjun viewed file list
+[2026-05-30 21:37:36] Arjun logged out
+[2026-05-30 21:39:35] Server started on 0.0.0.0:9999
+[2026-05-30 21:40:00] Server started on 0.0.0.0:9999
+[2026-05-30 21:40:30] New connection from ('127.0.0.1', 64083)
+[2026-05-30 21:40:30] Arjun logged in
+[2026-05-30 21:40:31] Arjun listed files
+[2026-05-30 21:40:33] Arjun viewed history
+[2026-05-30 21:40:49] Arjun listed files
+[2026-05-30 21:40:52] Arjun listed files
+[2026-05-30 21:40:55] Arjun viewed history
+[2026-05-30 21:40:56] Arjun listed files
+[2026-05-30 21:41:06] Arjun logged out
+[2026-05-30 21:45:18] Server started on 0.0.0.0:9999
+[2026-05-30 21:45:33] New connection from ('127.0.0.1', 57545)
+[2026-05-30 21:45:33] Arjun logged in
+[2026-05-30 21:45:34] Arjun listed files
+[2026-05-30 21:45:51] Arjun listed files
+[2026-05-30 21:46:50] Server error with Arjun: [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 21:47:47] Server started on 0.0.0.0:9999
+[2026-05-30 21:48:18] New connection from ('127.0.0.1', 61834)
+[2026-05-30 21:48:18] Arjun logged in
+[2026-05-30 21:48:20] Arjun listed files
+[2026-05-30 21:48:22] Arjun listed files
+[2026-05-30 21:48:27] Arjun logged out
+[2026-05-30 21:49:56] New connection from ('127.0.0.1', 61851)
+[2026-05-30 21:49:56] Arjun logged in
+[2026-05-30 21:50:00] Arjun listed files
+[2026-05-30 21:50:04] Arjun logged out
+[2026-05-30 21:51:09] New connection from ('127.0.0.1', 51182)
+[2026-05-30 21:51:09] Arjun logged in
+[2026-05-30 21:51:11] Arjun listed files
+[2026-05-30 21:51:14] Arjun logged out
+[2026-05-30 21:52:31] New connection from ('127.0.0.1', 63859)
+[2026-05-30 21:52:31] Arjun logged in
+[2026-05-30 21:52:36] Arjun listed files
+[2026-05-30 21:57:20] New connection from ('127.0.0.1', 55520)
+[2026-05-30 21:57:20] Arjun logged in
+[2026-05-30 21:57:23] Arjun listed files
+[2026-05-30 21:57:49] Arjun listed files
+[2026-05-30 21:57:50] Arjun listed files
+[2026-05-30 21:57:51] Arjun listed files
+[2026-05-30 21:58:09] Arjun viewed history
+[2026-05-30 21:58:57] Server started on 0.0.0.0:9999
+[2026-05-30 21:59:09] New connection from ('127.0.0.1', 55532)
+[2026-05-30 21:59:09] Arjun logged in
+[2026-05-30 21:59:12] Arjun listed files
+[2026-05-30 22:04:12] Server started on 0.0.0.0:9999
+[2026-05-30 22:06:59] New connection from ('127.0.0.1', 53147)
+[2026-05-30 22:06:59] Arjun logged in successfully
+[2026-05-30 22:07:02] Arjun viewed file list
+[2026-05-30 22:07:21] Arjun downloaded anivex
+[2026-05-30 22:07:36] Server error with ('127.0.0.1', 53147): invalid literal for int() with base 10: '.pdf'
+[2026-05-30 22:19:53] New connection from ('127.0.0.1', 59542)
+[2026-05-30 22:19:53] Arjun logged in successfully
+[2026-05-30 22:19:55] Arjun viewed file list
+[2026-05-30 22:20:18] Arjun viewed server history

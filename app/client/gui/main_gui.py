@@ -26,14 +26,11 @@ class LoginWindow(ctk.CTk):
 
         self.bind("<Return>", lambda event: self.login())
 
-    # ---------------- UI ---------------- #
-
     def build_ui(self):
 
         main_frame = ctk.CTkFrame(self, corner_radius=20)
         main_frame.pack(fill="both", expand=True, padx=20, pady=20)
 
-        # LEFT PANEL
         left_frame = ctk.CTkFrame(
             main_frame,
             width=260,
@@ -80,14 +77,12 @@ class LoginWindow(ctk.CTk):
             justify="left"
         ).pack(pady=20)
 
-        # RIGHT PANEL
         right_frame = ctk.CTkFrame(main_frame)
         right_frame.pack(side="right", fill="both", expand=True)
 
         center_frame = ctk.CTkFrame(right_frame, fg_color="transparent")
         center_frame.place(relx=0.5, rely=0.5, anchor="center")
 
-        # Title
         ctk.CTkLabel(
             center_frame,
             text="NETWORK FILE SERVER",
@@ -100,7 +95,6 @@ class LoginWindow(ctk.CTk):
             font=("Arial", 16)
         ).pack(pady=(0, 30))
 
-        # Username
         self.username_entry = ctk.CTkEntry(
             center_frame,
             width=380,
@@ -111,7 +105,6 @@ class LoginWindow(ctk.CTk):
         )
         self.username_entry.pack(pady=10)
 
-        # Password
         self.password_entry = ctk.CTkEntry(
             center_frame,
             width=380,
@@ -123,7 +116,6 @@ class LoginWindow(ctk.CTk):
         )
         self.password_entry.pack(pady=10)
 
-        # Toggle password button
         self.toggle_btn = ctk.CTkButton(
             center_frame,
             text="Show Password",
@@ -135,7 +127,6 @@ class LoginWindow(ctk.CTk):
         )
         self.toggle_btn.pack(pady=5)
 
-        # Login button
         self.login_btn = ctk.CTkButton(
             center_frame,
             text="Login",
@@ -148,7 +139,6 @@ class LoginWindow(ctk.CTk):
         )
         self.login_btn.pack(pady=(20, 10))
 
-        # Register button
         ctk.CTkButton(
             center_frame,
             text="Create Account",
@@ -160,7 +150,6 @@ class LoginWindow(ctk.CTk):
             command=self.register
         ).pack(pady=10)
 
-        # Footer
         ctk.CTkLabel(
             right_frame,
             text="Network File Server v1.0 | Python • Socket • CustomTkinter",
@@ -169,11 +158,8 @@ class LoginWindow(ctk.CTk):
 
         self.username_entry.focus()
 
-        # UX binds
         self.password_entry.bind("<Return>", lambda e: self.login())
         self.username_entry.bind("<Tab>", lambda e: self.password_entry.focus())
-
-    # ---------------- UX ---------------- #
 
     def toggle_password(self):
         self.show_password = not self.show_password
@@ -184,8 +170,6 @@ class LoginWindow(ctk.CTk):
         else:
             self.password_entry.configure(show="*")
             self.toggle_btn.configure(text="Show Password")
-
-    # ---------------- LOGIN ---------------- #
 
     def login(self):
 
@@ -204,20 +188,14 @@ class LoginWindow(ctk.CTk):
         self.login_btn.configure(state="normal", text="Login")
 
         if success:
-
             self.client_socket = client_socket
-
             messagebox.showinfo("Success", "Login Successful")
-
             self.destroy()
-
             dashboard = Dashboard(client_socket, username)
             dashboard.mainloop()
 
         else:
             messagebox.showerror("Error", "Invalid Credentials")
-
-    # ---------------- REGISTER ---------------- #
 
     def register(self):
 
@@ -239,8 +217,6 @@ class LoginWindow(ctk.CTk):
         else:
             messagebox.showerror("Error", response)
 
-
-# ---------------- RUN ---------------- #
 
 if __name__ == "__main__":
     app = LoginWindow()

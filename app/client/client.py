@@ -11,8 +11,6 @@ try:
 
     print('Connected to server')
 
-    # AUTHENTICATION PHASE
-
     choice = input(
         "Choose LOGIN or REGISTER: "
     ).upper()
@@ -25,9 +23,7 @@ try:
         "Enter password: "
     )
 
-    command = (
-        f'{choice} {username} {password}'
-    )
+    command = f'{choice} {username} {password}'
 
     client_socket.send(
         command.encode()
@@ -37,58 +33,29 @@ try:
         1024
     ).decode()
 
-    # REGISTER SUCCESS
-
     if response == 'REGISTER_SUCCESS':
 
-        print(
-            "Registration Successful"
-        )
-
+        print("Registration Successful")
         client_socket.close()
-
         exit()
-
-    # USER ALREADY EXISTS
 
     elif response == 'USER_EXISTS':
 
-        print(
-            "Username already exists"
-        )
-
+        print("Username already exists")
         client_socket.close()
-
         exit()
-
-    # LOGIN FAILED
 
     elif response != 'AUTH_SUCCESS':
 
-        print(
-            "Authentication Failed"
-        )
-
+        print("Authentication Failed")
         client_socket.close()
-
         exit()
-
-    # LOGIN SUCCESS
 
     else:
 
-        print(
-            "Authentication Successful"
-        )
+        print("Authentication Successful")
 
-    # CREATE DOWNLOADS FOLDER IF NOT EXISTS
-
-    os.makedirs(
-        '../downloads',
-        exist_ok=True
-    )
-
-    # OPERATION PHASE
+    os.makedirs('../downloads', exist_ok=True)
 
     while True:
 
@@ -110,308 +77,156 @@ try:
             "Enter operation: "
         ).upper()
 
-        # LOGOUT OPERATION
-
         if operation == 'LOGOUT':
 
-            client_socket.send(
-                operation.encode()
-            )
-
-            print(
-                "Logged out successfully"
-            )
-
+            client_socket.send(operation.encode())
+            print("Logged out successfully")
             break
-
-        # LIST OPERATION
 
         elif operation == 'LIST':
 
-            client_socket.send(
-                operation.encode()
-            )
-
-            response = client_socket.recv(
-                4096
-            ).decode()
-
-            print(
-                "\nFiles available on server:\n"
-            )
-
+            client_socket.send(operation.encode())
+            response = client_socket.recv(4096).decode()
+            print("\nFiles available on server:\n")
             print(response)
-
-        # RENAME OPERATION
 
         elif operation == 'RENAME':
 
-            old_filename = input(
-                "Enter old filename: "
-            )
+            old_filename = input("Enter old filename: ")
+            new_filename = input("Enter new filename: ")
 
-            new_filename = input(
-                "Enter new filename: "
-            )
+            command = f'{operation} {old_filename} {new_filename}'
+            client_socket.send(command.encode())
 
-            command = (
-                f'{operation} {old_filename} {new_filename}'
-            )
-
-            client_socket.send(
-                command.encode()
-            )
-
-            response = client_socket.recv(
-                1024
-            ).decode()
-
+            response = client_socket.recv(1024).decode()
             print(response)
-
-        # HISTORY OPERATION
 
         elif operation == 'HISTORY':
 
-            client_socket.send(
-                operation.encode()
-            )
+            client_socket.send(operation.encode())
 
-            history = client_socket.recv(
-                4096
-            ).decode()
+            # History log can be large, read in chunks
+            history_parts = []
+            while True:
+                part = client_socket.recv(4096).decode()
+                history_parts.append(part)
+                if len(part) < 4096:
+                    break
 
-            # ACCESS DENIED
+            history = ''.join(history_parts)
 
             if history == 'ACCESS_DENIED':
-
-                print(
-                    "Only admin can view server history"
-                )
-
+                print("Only admin can view server history")
             else:
-
-                print(
-                    "\nSERVER HISTORY:\n"
-                )
-
+                print("\nSERVER HISTORY:\n")
                 print(history)
-
-        # UPLOAD OPERATION
 
         elif operation == 'UPLOAD':
 
-            filename = input(
-                'Enter Filename: '
-            )
-
-            filepath = os.path.join(
-                'files',
-                filename
-            )
-
-            # FILE EXISTENCE CHECK
+            filename = input('Enter Filename: ')
+            filepath = os.path.join('files', filename)
 
             if not os.path.exists(filepath):
-
-                print(
-                    "File does not exist"
-                )
-
+                print("File does not exist")
                 continue
 
-            filesize = os.path.getsize(
-                filepath
-            )
+            filesize = os.path.getsize(filepath)
 
-            command = (
-                f'{operation} {filename} {filesize}'
-            )
+            command = f'{operation} {filename} {filesize}'
+            client_socket.send(command.encode())
 
-            client_socket.send(
-                command.encode()
-            )
+            # Wait for server READY before sending file
+            ack = client_socket.recv(1024).decode()
+            if ack != 'READY':
+                print(f"Server error: {ack}")
+                continue
 
             file = open(filepath, 'rb')
-
             sent_size = 0
 
             while sent_size < filesize:
 
                 data = file.read(1024)
-
                 if not data:
                     break
 
                 client_socket.send(data)
-
                 sent_size += len(data)
 
-                progress = (
-                    sent_size / filesize
-                ) * 100
-
-                print(
-                    f"Uploading: {progress:.2f}%",
-                    end='\r'
-                )
+                progress = (sent_size / filesize) * 100
+                print(f"Uploading: {progress:.2f}%", end='\r')
 
             file.close()
 
-            response = client_socket.recv(
-                1024
-            ).decode()
-
-            print(
-                f"\n{response}"
-            )
-
-        # DOWNLOAD OPERATION
+            response = client_socket.recv(1024).decode()
+            print(f"\n{response}")
 
         elif operation == 'DOWNLOAD':
 
-            filename = input(
-                'Enter Filename: '
-            )
+            filename = input('Enter Filename: ')
 
-            command = (
-                f'{operation} {filename}'
-            )
+            command = f'{operation} {filename}'
+            client_socket.send(command.encode())
 
-            client_socket.send(
-                command.encode()
-            )
-
-            response = client_socket.recv(
-                1024
-            ).decode()
-
-            # ACCESS DENIED
+            response = client_socket.recv(1024).decode()
 
             if response == 'ACCESS_DENIED':
-
-                print(
-                    "You don't have permission to download this file"
-                )
-
+                print("You don't have permission to download this file")
                 continue
-
-            # FILE NOT FOUND
 
             elif response == 'FILE_NOT_FOUND':
-
-                print(
-                    "File not found on server"
-                )
-
+                print("File not found on server")
                 continue
 
-            # FILESIZE RECEIVED
-
             filesize = int(response)
+            client_socket.send("READY".encode())
 
-            client_socket.send(
-                "READY".encode()
-            )
-
-            download_path = os.path.join(
-                '../downloads',
-                filename
-            )
-
-            file = open(
-                download_path,
-                'wb'
-            )
+            download_path = os.path.join('../downloads', filename)
+            file = open(download_path, 'wb')
 
             received_size = 0
 
             while received_size < filesize:
 
-                data = client_socket.recv(
-                    1024
-                )
-
+                data = client_socket.recv(1024)
                 if not data:
                     break
 
                 file.write(data)
-
                 received_size += len(data)
 
-                progress = (
-                    received_size / filesize
-                ) * 100
-
-                print(
-                    f"Downloading: {progress:.2f}%",
-                    end='\r'
-                )
+                progress = (received_size / filesize) * 100
+                print(f"Downloading: {progress:.2f}%", end='\r')
 
             file.close()
 
-            print(
-                "\nDownload completed"
-            )
-
-            print(
-                f"File saved to {download_path}"
-            )
-
-        # DELETE OPERATION
+            print("\nDownload completed")
+            print(f"File saved to {download_path}")
 
         elif operation == 'DELETE':
 
-            filename = input(
-                'Enter Filename: '
-            )
+            filename = input('Enter Filename: ')
 
-            command = (
-                f'{operation} {filename}'
-            )
+            command = f'{operation} {filename}'
+            client_socket.send(command.encode())
 
-            client_socket.send(
-                command.encode()
-            )
-
-            response = client_socket.recv(
-                1024
-            ).decode()
-
+            response = client_socket.recv(1024).decode()
             print(response)
-
-        # SHARE OPERATION
 
         elif operation == 'SHARE':
 
-            filename = input(
-                "Enter Filename: "
-            )
+            filename = input("Enter Filename: ")
+            target_user = input("Enter username to share with: ")
 
-            target_user = input(
-                "Enter username to share with: "
-            )
+            command = f'{operation} {filename} {target_user}'
+            client_socket.send(command.encode())
 
-            command = (
-                f'{operation} {filename} {target_user}'
-            )
-
-            client_socket.send(
-                command.encode()
-            )
-
-            response = client_socket.recv(
-                1024
-            ).decode()
-
+            response = client_socket.recv(1024).decode()
             print(response)
-
-        # INVALID OPERATION
 
         else:
 
-            print(
-                "Invalid operation"
-            )
+            print("Invalid operation")
 
 except Exception as e:
 
@@ -419,6 +234,8 @@ except Exception as e:
 
 finally:
 
-    client_socket.close()
-
-    print("Socket closed")
+    try:
+        client_socket.close()
+        print("Socket closed")
+    except NameError:
+        print("Socket closed")
