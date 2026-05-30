@@ -42,3 +42,154 @@
 [2026-05-29 22:41:17] Arjun logged in successfully
 [2026-05-29 22:41:22] Arjun viewed file list
 [2026-05-29 22:41:34] Arjun viewed server history
+[2026-05-29 23:11:45] New connection from ('192.168.0.175', 59570)
+[2026-05-29 23:11:59] Arjun logged in successfully
+[2026-05-29 23:14:45] Server error with ('192.168.0.175', 59570): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 23:14:48] New connection from ('192.168.0.175', 63436)
+[2026-05-29 23:14:58] Arjun logged in successfully
+[2026-05-29 23:16:36] New connection from ('192.168.0.175', 50336)
+[2026-05-29 23:22:57] New connection from ('192.168.0.175', 58340)
+[2026-05-29 23:23:08] Arjun logged in successfully
+[2026-05-29 23:24:17] Server error with ('192.168.0.175', 58340): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-29 23:35:40] New connection from ('192.168.0.175', 62579)
+[2026-05-29 23:35:40] Arjun logged in successfully
+[2026-05-29 23:40:53] New connection from ('192.168.0.175', 50119)
+[2026-05-29 23:40:53] Arjun logged in successfully
+[2026-05-29 23:44:00] New connection from ('192.168.0.175', 60408)
+[2026-05-29 23:44:00] Arjun logged in successfully
+[2026-05-29 23:47:02] New connection from ('192.168.0.175', 64221)
+[2026-05-29 23:47:02] Arjun logged in successfully
+[2026-05-29 23:47:04] Arjun viewed file list
+[2026-05-29 23:47:30] Arjun downloaded ganesh.jpg
+[2026-05-29 23:47:59] Arjun viewed server history
+[2026-05-29 23:48:15] Arjun viewed file list
+[2026-05-29 23:48:44] Arjun viewed server history
+[2026-05-30 10:31:00] New connection from ('127.0.0.1', 63428)
+[2026-05-30 10:33:34] New connection from ('127.0.0.1', 62541)
+[2026-05-30 10:33:34] New user registered: Rahul
+[2026-05-30 10:33:38] New connection from ('127.0.0.1', 57886)
+[2026-05-30 10:33:38] Rahul logged in successfully
+[2026-05-30 10:38:19] New connection from ('127.0.0.1', 64911)
+[2026-05-30 10:38:27] Arjun logged in successfully
+[2026-05-30 10:42:04] Server error with ('127.0.0.1', 57886): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 10:42:13] New connection from ('127.0.0.1', 51412)
+[2026-05-30 10:42:13] Arjun logged in successfully
+[2026-05-30 10:42:33] Arjun viewed file list
+[2026-05-30 10:42:53] Arjun viewed file list
+[2026-05-30 10:42:59] Arjun logged out
+[2026-05-30 10:43:19] New connection from ('127.0.0.1', 51422)
+[2026-05-30 10:43:19] New user registered: pruthvi
+[2026-05-30 10:43:22] New connection from ('127.0.0.1', 51423)
+[2026-05-30 10:43:22] pruthvi logged in successfully
+[2026-05-30 10:43:27] pruthvi viewed file list
+[2026-05-30 10:43:30] pruthvi logged out
+[2026-05-30 10:47:25] New connection from ('127.0.0.1', 56459)
+[2026-05-30 10:47:25] Arjun logged in successfully
+[2026-05-30 10:47:29] Arjun viewed file list
+[2026-05-30 11:04:15] Server error with ('127.0.0.1', 56459): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:04:25] New connection from ('127.0.0.1', 60164)
+[2026-05-30 11:04:25] Arjun logged in successfully
+[2026-05-30 11:09:05] Server error with ('127.0.0.1', 60164): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:09:13] New connection from ('127.0.0.1', 61592)
+[2026-05-30 11:09:13] Arjun logged in successfully
+[2026-05-30 11:11:11] Server error with ('127.0.0.1', 61592): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:11:18] New connection from ('127.0.0.1', 65388)
+[2026-05-30 11:11:18] Arjun logged in successfully
+[2026-05-30 11:12:20] Arjun viewed file list
+[2026-05-30 11:17:26] Server error with ('127.0.0.1', 65388): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:17:39] New connection from ('127.0.0.1', 55145)
+[2026-05-30 11:17:39] Arjun logged in successfully
+[2026-05-30 11:17:48] Arjun uploaded mayur.png
+[2026-05-30 11:23:09] Server error with ('127.0.0.1', 55145): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:23:18] New connection from ('127.0.0.1', 60139)
+[2026-05-30 11:23:18] Arjun logged in successfully
+[2026-05-30 11:25:28] Server error with ('127.0.0.1', 60139): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:26:15] New connection from ('127.0.0.1', 49721)
+[2026-05-30 11:26:15] sunil logged in successfully
+[2026-05-30 11:29:03] Server error with ('127.0.0.1', 49721): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:29:30] New connection from ('127.0.0.1', 51236)
+[2026-05-30 11:29:30] Arjun logged in successfully
+[2026-05-30 11:34:40] Server error with ('127.0.0.1', 51236): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:35:04] New connection from ('127.0.0.1', 56027)
+[2026-05-30 11:35:04] Arjun logged in successfully
+[2026-05-30 11:35:25] Server error with ('127.0.0.1', 56027): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:35:35] New connection from ('127.0.0.1', 50546)
+[2026-05-30 11:35:35] sunil logged in successfully
+[2026-05-30 11:36:06] Server error with ('127.0.0.1', 50546): invalid literal for int() with base 10: "Kalyan's"
+[2026-05-30 11:36:52] New connection from ('127.0.0.1', 62424)
+[2026-05-30 11:36:52] sunil logged in successfully
+[2026-05-30 11:37:26] Server error with ('127.0.0.1', 62424): invalid literal for int() with base 10: 'Bagde'
+[2026-05-30 11:38:14] New connection from ('127.0.0.1', 50539)
+[2026-05-30 11:38:14] sunil logged in successfully
+[2026-05-30 11:38:22] sunil uploaded Hack2skill-Certificate1.png
+[2026-05-30 11:52:01] Server error with ('127.0.0.1', 50539): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 11:52:11] New connection from ('127.0.0.1', 61949)
+[2026-05-30 11:52:11] sunil logged in successfully
+[2026-05-30 11:52:14] sunil viewed file list
+[2026-05-30 11:52:32] sunil viewed file list
+[2026-05-30 11:52:51] Server error with ('127.0.0.1', 61949): invalid literal for int() with base 10: 'Gen'
+[2026-05-30 11:54:30] New connection from ('127.0.0.1', 62717)
+[2026-05-30 11:54:30] sunil logged in successfully
+[2026-05-30 11:54:32] sunil viewed file list
+[2026-05-30 11:54:39] Server error with ('127.0.0.1', 62717): invalid literal for int() with base 10: 'Gen'
+[2026-05-30 11:57:34] New connection from ('127.0.0.1', 57604)
+[2026-05-30 11:57:34] sunil logged in successfully
+[2026-05-30 11:57:38] sunil viewed file list
+[2026-05-30 11:57:50] sunil uploaded Anivex.jpeg
+[2026-05-30 11:58:44] sunil downloaded Anivex.jpeg
+[2026-05-30 12:10:38] Server error with ('127.0.0.1', 57604): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 12:14:56] New connection from ('127.0.0.1', 60499)
+[2026-05-30 12:14:56] sunil logged in successfully
+[2026-05-30 12:14:59] sunil viewed file list
+[2026-05-30 12:15:08] sunil viewed file list
+[2026-05-30 12:15:23] sunil downloaded Anivex.jpeg
+[2026-05-30 12:16:47] sunil downloaded Hack2skill-Certificate1.png
+[2026-05-30 12:17:11] sunil viewed file list
+[2026-05-30 12:17:58] sunil renamed Hack2skill-Certificate1.png to Hack2skill_Cert.png
+[2026-05-30 12:18:01] sunil viewed file list
+[2026-05-30 12:18:51] sunil viewed file list
+[2026-05-30 12:19:06] sunil deleted fileServer.jpg
+[2026-05-30 12:19:08] sunil viewed file list
+[2026-05-30 12:19:55] sunil shared Anivex.jpeg with Arjun
+[2026-05-30 12:20:31] sunil logged out
+[2026-05-30 12:27:37] New connection from ('127.0.0.1', 50770)
+[2026-05-30 12:27:37] Arjun logged in successfully
+[2026-05-30 12:27:39] Arjun viewed file list
+[2026-05-30 12:27:44] Arjun viewed server history
+[2026-05-30 12:28:23] Server error with ('127.0.0.1', 50770): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 12:43:57] New connection from ('127.0.0.1', 51968)
+[2026-05-30 12:43:57] Arjun logged in successfully
+[2026-05-30 12:43:58] Arjun viewed file list
+[2026-05-30 12:44:03] Arjun viewed server history
+[2026-05-30 12:44:12] Arjun logged out
+[2026-05-30 12:55:51] New connection from ('127.0.0.1', 50064)
+[2026-05-30 12:55:51] Arjun logged in successfully
+[2026-05-30 12:55:53] Arjun viewed file list
+[2026-05-30 13:20:16] New connection from ('127.0.0.1', 64381)
+[2026-05-30 13:20:16] Arjun logged in successfully
+[2026-05-30 13:20:18] Arjun viewed file list
+[2026-05-30 13:26:36] New connection from ('127.0.0.1', 62590)
+[2026-05-30 13:26:36] Arjun logged in successfully
+[2026-05-30 13:26:39] Arjun viewed file list
+[2026-05-30 13:26:54] Arjun viewed file list
+[2026-05-30 13:26:55] Arjun viewed file list
+[2026-05-30 13:26:56] Arjun viewed file list
+[2026-05-30 13:26:57] Arjun viewed file list
+[2026-05-30 13:26:59] Arjun viewed file list
+[2026-05-30 13:26:59] Arjun viewed file list
+[2026-05-30 13:28:44] New connection from ('127.0.0.1', 52629)
+[2026-05-30 13:28:44] Arjun logged in successfully
+[2026-05-30 13:28:46] Arjun viewed file list
+[2026-05-30 13:31:48] Server error with ('127.0.0.1', 52629): [WinError 10054] An existing connection was forcibly closed by the remote host
+[2026-05-30 13:31:58] New connection from ('127.0.0.1', 61279)
+[2026-05-30 13:31:58] Arjun logged in successfully
+[2026-05-30 13:32:00] Arjun viewed file list
+[2026-05-30 13:32:17] Arjun viewed file list
+[2026-05-30 13:32:18] Arjun viewed file list
+[2026-05-30 13:32:18] Arjun viewed file list
+[2026-05-30 13:32:18] Arjun viewed file list
+[2026-05-30 13:32:28] Arjun viewed file list
+[2026-05-30 13:32:30] Arjun viewed file list
+[2026-05-30 13:33:02] New connection from ('127.0.0.1', 50536)
+[2026-05-30 13:33:02] Arjun logged in successfully
+[2026-05-30 13:33:04] Arjun viewed file list

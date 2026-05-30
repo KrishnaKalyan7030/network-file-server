@@ -6,7 +6,7 @@ try:
     client_socket = socket.socket()
 
     client_socket.connect(
-        ('192.168.0.175', 9999)
+        ('127.0.0.1', 9999)
     )
 
     print('Connected to server')
