@@ -1,7 +1,12 @@
 import socket
+import json
 
-SERVER_IP = "192.168.0.175"
-SERVER_PORT = 9999
+with open("app\client\config\config.json", "r") as file:
+    config = json.load(file)
+
+SERVER_IP = config["server_ip"]
+SERVER_PORT = config["server_port"]
+
 TIMEOUT = 15
 
 
